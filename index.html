@@ -8,13 +8,85 @@
     <title>Blackjack</title>
   </head>
   <body>
-    <header>
-      <h1>Blackjack</h1>
-    </header>
-    <main>
-      <section>
-        <div>Blackjack Browser Game</div>
-      </section>
-    </main>
+    <div class="game-wrapper">
+      <main>
+        <!-- Game Message -->
+        <section>
+          <div class="game-message">
+            <div class="inner-container">
+              <article>
+                <p class="top">Top message</p>
+              </article>
+              <article>
+                <p class="bottom">Bottom message</p>
+              </article>
+            </div>
+          </div>
+        </section>
+        <!-- Cards -->
+        <section>
+          <div class="cards">
+            <div class="inner-container">
+              <article>
+                <div class="dealer-cards"></div>
+              </article>
+              <article>
+                <div class="player-cards"></div>
+              </article>
+            </div>
+          </div>
+        </section>
+        <!-- Wood Design -->
+        <section>
+          <div class="wood">
+            <div class="wood-outwards"></div>
+            <div class="wood-inwards"></div>
+          </div>
+        </section>
+        <!-- Bottom UI (Player Details and Controls) -->
+        <section>
+          <div class="bottom-ui">
+            <div class="inner-container">
+              <!-- Player Details -->
+              <section>
+                <div class="player-details">
+                  <div class="inner-container">
+                    <article>
+                      <div class="inner-container">
+                        <span class="dollar-sign">$</span>
+                        <span class="current-bet">50</span>
+                      </div>
+                    </article>
+                    <article>
+                      <div class="inner-container">
+                        <span class="dollar-sign">$</span>
+                        <span class="cash-left">560</span>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </section>
+              <!-- Player Controls -->
+              <section>
+                <div class="player-controls">
+                  <div class="inner-container">
+                    <article>
+                      <div class="button stand">
+                        <span>STAND</span>
+                      </div>
+                    </article>
+                    <article>
+                      <div class="button hit">
+                        <span>HIT</span>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   </body>
 </html>
