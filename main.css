@@ -9,12 +9,45 @@ body {
   background-color: #fffbe3;
 }
 
+.table {
+  position: relative;
+  min-height: 100vh;
+  background-color: #fffbe3;
+}
+
+.table .wood {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-box-shadow: 0px -10px 5px 0px rgba(51, 51, 51, 0.22);
+  -moz-box-shadow: 0px -10px 5px 0px rgba(51, 51, 51, 0.22);
+  box-shadow: 0px -10px 5px 0px rgba(51, 51, 51, 0.22);
+}
+
+.table .wood .wood-outwards,
+.table .wood .wood-inwards {
+  height: 50px;
+}
+
+.table .wood .wood-outwards {
+  position: relative;
+  background-color: #906124;
+}
+
+.table .wood .wood-inwards {
+  background-color: #714f23;
+  -webkit-box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
+  -moz-box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
+  box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
+}
+
 .game-message {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  -webkit-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
-  -moz-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
-  box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
+  -webkit-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
+  -moz-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
+  box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
 }
 
 .game-message .inner-container {
