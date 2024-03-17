@@ -37,3 +37,30 @@ body {
   color: #7016dd;
   font-weight: 700;
 }
+
+.cards {
+  padding: 4rem 0;
+}
+
+.cards .inner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.card {
+  display: inline-block;
+  width: 80px;
+}
+
+.card > img {
+  max-width: 100%;
+}
+
+.dealer-cards,
+.player-cards {
+  display: flex;
+  gap: 1rem;
+}
