@@ -7,6 +7,7 @@
 
 body {
   background-color: #fffbe3;
+  min-width: 350px;
 }
 
 .table {
@@ -15,39 +16,73 @@ body {
   background-color: #fffbe3;
 }
 
-.table .wood {
+.wood {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  width: 100%;
   -webkit-box-shadow: 0px -10px 5px 0px rgba(51, 51, 51, 0.22);
   -moz-box-shadow: 0px -10px 5px 0px rgba(51, 51, 51, 0.22);
   box-shadow: 0px -10px 5px 0px rgba(51, 51, 51, 0.22);
 }
 
-.table .wood .wood-outwards,
-.table .wood .wood-inwards {
+@media screen and (orientation: landscape) and (max-width: 900px) and (max-height: 500px) {
+  .wood {
+    position: relative;
+  }
+}
+
+.wood .wood-outwards,
+.wood .wood-inwards {
   height: 50px;
 }
 
-.table .wood .wood-outwards {
-  position: relative;
+.wood .wood-outwards {
   background-color: #906124;
 }
 
-.table .wood .wood-inwards {
+.wood .wood-inwards {
   background-color: #714f23;
   -webkit-box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
   -moz-box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
   box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
 }
 
+.game-wrapper {
+  position: relative;
+  max-width: 1100px;
+  min-height: 100vh;
+  margin: auto;
+  padding-top: 105px;
+}
+
+@media screen and (min-width: 1000px) {
+  .game-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0;
+  }
+}
+
 .game-message {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   -webkit-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
   -moz-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
   box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
+}
+
+@media screen and (min-width: 1000px) {
+  .game-message {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 }
 
 .game-message .inner-container {
@@ -72,7 +107,20 @@ body {
 }
 
 .cards {
-  padding: 4rem 0;
+  height: 100%;
+  min-height: 100%;
+}
+
+@media screen and (orientation: landscape) {
+  .cards {
+    padding: 0 0 200px 0;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .cards {
+    padding: 0;
+  }
 }
 
 .cards .inner-container {
@@ -80,16 +128,14 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
+  padding-top: 3rem;
 }
 
-.card {
-  display: inline-block;
-  width: 80px;
-}
-
-.card > img {
-  max-width: 100%;
+@media screen and (min-width: 1000px) {
+  .cards .inner-container {
+    padding-top: 0;
+  }
 }
 
 .dealer-cards,
@@ -98,7 +144,55 @@ body {
   gap: 1rem;
 }
 
+.card,
+.previous-card {
+  display: inline-block;
+  width: 70px;
+  line-height: 0;
+  font-size: 0;
+}
+
+@media screen and (min-width: 767px) {
+  .card {
+    width: 90px;
+  }
+}
+
+.card > img,
+.previous-card > img {
+  max-width: 100%;
+}
+
 .bottom-ui {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 160.5px;
+  padding: 0.5rem 1rem;
+  z-index: 1;
+}
+
+@media screen and (min-width: 1000px) {
+  .bottom-ui {
+    right: 0;
+    left: auto;
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+/*
+
+The bottom ui's inner container contains
+the player's details and controls.
+
+*/
+
+.bottom-ui > .inner-container {
   position: absolute;
   left: 0;
   right: 0;
@@ -106,14 +200,31 @@ body {
   width: 100%;
   padding: 0.5rem 1rem;
   z-index: 1;
-}
-
-/* This contains player details and controls */
-.bottom-ui > .inner-container {
   display: flex;
   align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
+@media screen and (min-width: 768px) {
+  .bottom-ui > .inner-container {
+    position: relative;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .bottom-ui > .inner-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* 
+
+Player details display the player's current bet and 
+their cash left.
+
+*/
 .bottom-ui .inner-container .player-details {
   border-radius: 13px;
 }
@@ -124,6 +235,7 @@ body {
   gap: 0.5rem;
   padding: 1rem 1.25rem;
   border-radius: 13px;
+  border: 1px solid #cee5ff;
   background: rgb(206, 229, 255);
   background: linear-gradient(
     180deg,
@@ -141,15 +253,37 @@ body {
   font-weight: 600;
 }
 
+/* 
+
+Player controls are the STAND and HIT buttons.
+
+*/
+
 #player-controls {
   flex: 1;
 }
 
 #player-controls .controls .inner-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  gap: 1.5rem;
   padding-left: 1rem;
+}
+
+@media screen and (min-width: 450px) {
+  #player-controls .controls .inner-container {
+    gap: 0;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #player-controls .controls .inner-container {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-left: 0;
+    padding-top: 2rem;
+  }
 }
 
 #player-controls .controls .button {
