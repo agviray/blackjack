@@ -249,8 +249,8 @@ their cash left.
   background: linear-gradient(180deg, var(--darkBlue) 0%, var(--offwhite) 50%);
 }
 
-.bottom-ui .player-details .current-bet,
-.bottom-ui .player-details .cash-left {
+.bottom-ui .player-details .player-bet,
+.bottom-ui .player-details .player-cash {
   display: flex;
   flex-direction: column;
   gap: 5px;
