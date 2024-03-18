@@ -1,3 +1,16 @@
+:root {
+  --offwhite: rgba(249, 249, 249, 1);
+  --midBlack: #333333;
+  --cream: #fffbe3;
+  --lightBrown: #906124;
+  --darkBrown: #714f23;
+  --red: #fe3b45;
+  --green: #3bfe90;
+  --lightBlue: #f1fdff;
+  --darkBlue: rgba(206, 229, 255, 1);
+  --purple: #7016dd;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,14 +19,14 @@
 }
 
 body {
-  background-color: #fffbe3;
+  background-color: var(--cream);
   min-width: 350px;
 }
 
 .table {
   position: relative;
   min-height: 100vh;
-  background-color: #fffbe3;
+  background-color: var(--cream);
 }
 
 .wood {
@@ -39,11 +52,11 @@ body {
 }
 
 .wood .wood-outwards {
-  background-color: #906124;
+  background-color: var(--lightBrown);
 }
 
 .wood .wood-inwards {
-  background-color: #714f23;
+  background-color: var(--darkBrown);
   -webkit-box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
   -moz-box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
   box-shadow: inset 0px 10px 5px 0px rgba(51, 51, 51, 0.49);
@@ -90,12 +103,8 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   padding: 1.75rem 1.5rem;
-  background: rgb(206, 229, 255);
-  background: linear-gradient(
-    180deg,
-    rgba(206, 229, 255, 1) 0%,
-    rgba(249, 249, 249, 1) 50%
-  );
+  background: var(--darkBlue);
+  background: linear-gradient(180deg, var(--darkBlue) 0%, var(--offwhite) 50%);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
@@ -235,13 +244,9 @@ their cash left.
   gap: 0.5rem;
   padding: 1rem 1.25rem;
   border-radius: 13px;
-  border: 1px solid #cee5ff;
-  background: rgb(206, 229, 255);
-  background: linear-gradient(
-    180deg,
-    rgba(206, 229, 255, 1) 0%,
-    rgba(249, 249, 249, 1) 50%
-  );
+  border: 1px solid var(--darkBlue);
+  background: var(--darkBlue);
+  background: linear-gradient(180deg, var(--darkBlue) 0%, var(--offwhite) 50%);
 }
 
 .bottom-ui .player-details .current-bet,
@@ -249,7 +254,7 @@ their cash left.
   display: flex;
   flex-direction: column;
   gap: 5px;
-  color: #7016dd;
+  color: var(--purple);
   font-weight: 600;
 }
 
@@ -299,10 +304,10 @@ Player controls are the STAND and HIT buttons.
 }
 
 #player-controls .controls .button.stand > span {
-  color: #f9f9f9;
+  color: var(--offwhite);
 }
 #player-controls .controls .button.hit > span {
-  color: #7016dd;
+  color: var(--purple);
 }
 
 #player-controls .controls .button > span {
@@ -314,9 +319,9 @@ Player controls are the STAND and HIT buttons.
 }
 
 #player-controls .controls .button.stand {
-  background-color: #fe3b45;
+  background-color: var(--red);
 }
 
 #player-controls .controls .button.hit {
-  background-color: #3bfe90;
+  background-color: var(--green);
 }
