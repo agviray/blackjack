@@ -34,7 +34,18 @@ let roundWinner;
 let gameMessage;
 
 /*----- cached element references -----*/
-
+// - Cash DOM Elements
+const cashLeft = document.querySelector('.cash');
+const currentBet = document.querySelector('.bet');
+// - Card DOM Elements
+const dealerCards = document.querySelector('.dealer-cards');
+const playerCards = document.querySelector('.player-cards');
+const standBtn = document.querySelector('.stand');
+const hitBtn = document.querySelector('.hit');
+// - Message DOM Elements
+const gameMessageSection = document.querySelector('.game-message');
+const gameMessageTop = gameMessageSection.querySelector('p.top');
+const gameMessageBottom = gameMessageSection.querySelector('p.bottom');
 /*----- event listeners -----*/
 
 /*----- functions -----*/
