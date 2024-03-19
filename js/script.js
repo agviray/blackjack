@@ -482,9 +482,10 @@ function init() {
 }
 
 function render() {
-  console.log(cardsInDeck);
-  console.log(playerCardsInHand);
+  // console.log(cardsInDeck);
   console.log(dealerCardsInHand);
+  console.log(playerCardsInHand);
+  console.log(dealerHandValue, playerHandValue);
   renderGameMessage();
   renderbettingUI();
   renderPlayerDetails();
@@ -559,9 +560,7 @@ function drawPlayerCard() {
   const cardDeck = [...cardsInDeck];
   const card = cardDeck.shift();
   playerCardsInHand = [...playerCardsInHand, card];
-  playerCardsInHand.forEach(({ value }) => {
-    playerHandValue += value;
-  });
+  playerHandValue += card.value;
   cardsInDeck = [...cardDeck];
   renderPlayerCard();
 }
@@ -588,9 +587,7 @@ function drawDealerCard() {
   const cardDeck = [...cardsInDeck];
   const card = cardDeck.shift();
   dealerCardsInHand = [...dealerCardsInHand, card];
-  dealerCardsInHand.forEach(({ value }) => {
-    dealerHandValue += value;
-  });
+  dealerHandValue += card.value;
   cardsInDeck = [...cardDeck];
   renderDealerCard();
 }
