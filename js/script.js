@@ -482,25 +482,38 @@ function init() {
 }
 
 function render() {
-  // console.log(cardsInDeck);
   console.log(dealerCardsInHand);
   console.log(playerCardsInHand);
-  console.log(dealerHandValue, playerHandValue);
   renderGameMessage();
-  renderbettingUI();
+  renderBettingUI();
   renderPlayerDetails();
-  // renderDealerCard();
-  // renderPlayerCard();
+  renderDealerCards();
+  renderPlayerCards();
 }
 
 // - Renders game message to DOM.
 function renderGameMessage() {
-  gameMessageTop.innerText = gameMessage.top;
-  gameMessageBottom.innerText = gameMessage.bottom;
+  if (isInitialDraw === true) {
+    gameMessageTop.innerText = gameMessage.top;
+    gameMessageBottom.innerText = gameMessage.bottom;
+  } else if (isInitialDraw === false) {
+    if (roundWinner === '') {
+      if (dealerCardsInHand.length === 2) {
+        const dealerUpCard = dealerCardsInHand[1].id.split('-').join(' of ');
+        gameMessageTop.innerText = `Dealer's up card is: ${dealerUpCard}`;
+      } else {
+        gameMessageTop.innerText = `Dealer's total: ${dealerHandValue}`;
+      }
+      gameMessageBottom.innerText = `Your total: ${playerHandValue}`;
+    } else {
+      gameMessageTop.innerText = `The winner is ${roundWinner}!`;
+      gameMessageBottom.innerText = ``;
+    }
+  }
 }
 
 // - Renders the betting UI
-function renderbettingUI() {
+function renderBettingUI() {
   if (isRoundStarted) {
     bettingUI.classList.add('removed');
   } else {
@@ -532,12 +545,9 @@ function handleBetButtonClick(event) {
     betInput.value = ''; // Clear input of betting UI.
     playerDetails.bet = bet;
     playerDetails.cashLeft -= bet;
-    gameMessage.top = `Good luck!`;
-    gameMessage.bottom = ``;
     isRoundStarted = true;
     drawInitialCards();
   }
-
   render();
 }
 
@@ -548,37 +558,21 @@ function drawInitialCards() {
   drawDealerCard();
   drawPlayerCard();
   drawDealerCard();
-  // - Starting from dealer left-side, draw face up card to player.
-  // - Draw face-down card to dealer.
-  // - Draw face-up card to player.
-  // - Draw face-up card to dealer.
+  isInitialDraw = false;
+  roundWinner = checkForWinnerOnInitialDraw();
 }
 
-// - Draw a card for the player.
-// - Updates playerCardsInHand and playerHandValue state.
-function drawPlayerCard() {
-  const cardDeck = [...cardsInDeck];
-  const card = cardDeck.shift();
-  playerCardsInHand = [...playerCardsInHand, card];
-  playerHandValue += card.value;
-  cardsInDeck = [...cardDeck];
-  renderPlayerCard();
-}
-// - Render player card.
-function renderPlayerCard() {
-  if (playerCardsInHand.length === 0) {
-    return;
+// - Checks for winner on initial draw (ie at the very beginning of the game)
+function checkForWinnerOnInitialDraw() {
+  if (dealerHandValue === 21 && playerHandValue === 21) {
+    return 'push';
   }
-  const card = playerCardsInHand[playerCardsInHand.length - 1];
-  const { src, alt } = card.image;
-  const cardDiv = document.createElement('div');
-  const cardImg = document.createElement('img');
-
-  cardDiv.classList.add('card');
-  cardImg.setAttribute('src', src);
-  cardImg.setAttribute('alt', alt);
-  cardDiv.appendChild(cardImg);
-  playerCards.appendChild(cardDiv);
+  if (dealerHandValue === 21 && playerHandValue < 21) {
+    return 'dealer';
+  } else if (playerHandValue === 21 && dealerHandValue < 21) {
+    return 'player';
+  }
+  return '';
 }
 
 // - Draw a card for the dealer.
@@ -589,34 +583,59 @@ function drawDealerCard() {
   dealerCardsInHand = [...dealerCardsInHand, card];
   dealerHandValue += card.value;
   cardsInDeck = [...cardDeck];
-  renderDealerCard();
+  render();
 }
 
-// - Render dealer card.
-function renderDealerCard() {
-  if (dealerCardsInHand.length === 0) {
-    return;
-  }
-  const card = dealerCardsInHand[dealerCardsInHand.length - 1];
-  const { src, alt } = card.image;
-  const cardDiv = document.createElement('div');
-  const cardImg = document.createElement('img');
+// - Draw a card for the player.
+// - Updates playerCardsInHand and playerHandValue state.
+function drawPlayerCard() {
+  const cardDeck = [...cardsInDeck];
+  const card = cardDeck.shift();
+  playerCardsInHand = [...playerCardsInHand, card];
+  playerHandValue += card.value;
+  cardsInDeck = [...cardDeck];
+  render();
+}
 
-  cardDiv.classList.add('card');
-  cardImg.setAttribute('alt', alt);
-  // - Handles specific logic only if isInitialDraw = true, in
-  //   other words at the very start of the game.
-  if (isRoundStarted && isInitialDraw) {
-    if (dealerCardsInHand.length === 1) {
-      cardImg.setAttribute('src', '../images/card-design.svg');
-      isInitialDraw = false;
-      isPlayerTurn = true;
+function renderDealerCards() {
+  dealerCards.innerHTML = '';
+  dealerCardsInHand.forEach((card, index) => {
+    const { src, alt } = card.image;
+    const cardDiv = document.createElement('div');
+    const cardImg = document.createElement('img');
+    cardDiv.classList.add('card');
+
+    // - Shows card design or card face depending on
+    //   whether or not a winner exists when initial cards dealt.
+    if (index === 0 && dealerCardsInHand.length <= 2) {
+      if (roundWinner === '') {
+        cardImg.setAttribute('src', '../images/card-design.svg');
+        cardImg.setAttribute('alt', 'Playing card design');
+      } else {
+        cardImg.setAttribute('src', src);
+        cardImg.setAttribute('alt', alt);
+      }
+    } else {
+      cardImg.setAttribute('src', src);
+      cardImg.setAttribute('alt', alt);
     }
-  } else {
-    cardImg.setAttribute('src', src); // - If isInitialDraw not true, render a card face up.
-  }
-  cardDiv.appendChild(cardImg);
-  dealerCards.appendChild(cardDiv);
+    cardDiv.appendChild(cardImg);
+    dealerCards.appendChild(cardDiv);
+  });
+}
+
+function renderPlayerCards() {
+  playerCards.innerHTML = '';
+  playerCardsInHand.forEach((card) => {
+    const { src, alt } = card.image;
+    const cardDiv = document.createElement('div');
+    const cardImg = document.createElement('img');
+    cardDiv.classList.add('card');
+    cardImg.setAttribute('src', src);
+    cardImg.setAttribute('alt', alt);
+    cardDiv.appendChild(cardImg);
+    playerCards.appendChild(cardDiv);
+  });
 }
 
 // - Shuffles full deck of cards.
