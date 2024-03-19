@@ -1,3 +1,4 @@
+console.log('Check your JS!');
 /*----- constants -----*/
 const CARDS = [
   {
@@ -417,28 +418,35 @@ const CARDS = [
     value: 2,
   },
 ];
+
+// const INITIAL_GAME_MESSAGE = {
+//   top: 'The name of the game is Blackjack.. Place your bet..',
+//   bottom: `How much are you betting? <span><input type="number" min=${1} max=${
+//     playerDetails.cashLeft
+//   }/></span>`,
+// };
 /*----- app's state (variables) -----*/
 // - player state
 let playerHandValue;
-let playerCardsInHand = [];
+let playerCardsInHand;
+let playerDetails;
 let playerActionSelected;
-let playerBet;
-let playerCashLeft;
 
 // - dealer state
 let dealerHandValue;
-let dealerCardsInHand = [];
+let dealerCardsInHand;
 
 // - game state
-let currentTurn;
-let cardsInDeck = [];
+let isRoundStarted;
+let isPlayerTurn;
+let cardsInDeck;
 let roundWinner;
 let gameMessage;
 
 /*----- cached element references -----*/
-// - Cash DOM Elements
-const cashLeft = document.querySelector('.cash');
+// - Player details (cash amounts) DOM Elements
 const currentBet = document.querySelector('.bet');
+const cashLeft = document.querySelector('.cash');
 // - Card DOM Elements
 const dealerCards = document.querySelector('.dealer-cards');
 const playerCards = document.querySelector('.player-cards');
@@ -447,8 +455,103 @@ const hitBtn = document.querySelector('.hit');
 // - Message DOM Elements
 const gameMessageTop = document.querySelector('.game-message p.top');
 const gameMessageBottom = document.querySelector('.game-message p.bottom');
-console.log(gameMessageTop);
-console.log(gameMessageBottom);
-/*----- event listeners -----*/
+const bettingEl = document.querySelector('.betting');
+const betInput = document.querySelector('input.bet-input');
+const betButton = document.querySelector('button.bet-button');
 
+/*----- event listeners -----*/
+betButton.addEventListener('click', handleBetButtonClick);
 /*----- functions -----*/
+init();
+console.log(cardsInDeck);
+
+function init() {
+  playerHandValue = 0;
+  playerCardsInHand = [];
+  playerDetails = {
+    bet: 0,
+    cashLeft: 500,
+  };
+  playerActionSelected = '';
+  dealerHandValue = 0;
+  dealerCardsInHand = [];
+  isRoundStarted = false;
+  isPlayerTurn = false;
+  cardsInDeck = shuffleCards(CARDS);
+  roundWinner = '';
+  gameMessage = {
+    top: 'The name of the game is Blackjack. Place your bet!',
+    bottom: 'How much are you betting?',
+  };
+  render();
+}
+
+function render() {
+  renderGameMessage();
+  renderBettingEl();
+  renderPlayerDetails();
+}
+
+// - Updates game message.
+function renderGameMessage() {
+  gameMessageTop.innerText = gameMessage.top;
+  gameMessageBottom.innerText = gameMessage.bottom;
+}
+
+// - Renders the betting UI
+function renderBettingEl() {
+  if (isRoundStarted) {
+    bettingEl.classList.add('removed');
+  } else {
+    bettingEl.classList.remove('removed');
+  }
+}
+
+// - Renders player details content.
+function renderPlayerDetails() {
+  currentBet.innerText = playerDetails.bet.toFixed(2);
+  cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+}
+
+// - Validates initial bet.
+// - This will also update the game message state and
+//   players details state.
+function handleBetButtonClick(event) {
+  event.preventDefault();
+  if (typeof betInput.value !== 'number') {
+    gameMessage.top = 'Enter a valid amount!';
+  }
+
+  if (betInput.value < 1) {
+    gameMessage.top = 'You must enter at least $1.00';
+  } else if (betInput.value > playerDetails.cashLeft) {
+    gameMessage.top = `You only have $${playerDetails.cashLeft}. You can't exceed that amount.`;
+  } else {
+    let bet = Number(parseFloat(betInput.value));
+    betInput.value = ''; // Clear input of betting UI.
+    playerDetails.bet = bet;
+    playerDetails.cashLeft -= bet;
+    gameMessage.top = `Good luck!`;
+    gameMessage.bottom = ``;
+    isRoundStarted = true;
+
+    // **********************
+    // **********************
+    // TODO
+    // **********************
+    // **********************
+    console.log('Deal cards from deck');
+    console.log('Set isPlayersTurn = true');
+  }
+
+  render();
+}
+
+// - Shuffles full deck of cards
+function shuffleCards(cards) {
+  for (let i = cards.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  return cards;
+}

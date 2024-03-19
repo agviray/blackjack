@@ -115,6 +115,10 @@ body {
   font-weight: 700;
 }
 
+.betting.removed {
+  display: none;
+}
+
 .cards {
   height: 100%;
   min-height: 100%;
