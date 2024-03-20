@@ -424,7 +424,6 @@ const CARDS = [
 let playerHandValue;
 let playerCardsInHand;
 let playerDetails;
-let playerActionSelected;
 
 // - dealer state
 let dealerHandValue;
@@ -437,7 +436,6 @@ let isPlayerTurn;
 let cardsInDeck;
 let roundWinner;
 let gameMessage;
-
 /*----- cached element references -----*/
 // - Player details (cash amounts) DOM Elements
 const currentBet = document.querySelector('.bet');
@@ -470,7 +468,6 @@ function init() {
     bet: 0,
     cashLeft: 500,
   };
-  playerActionSelected = '';
   dealerHandValue = 0;
   dealerCardsInHand = [];
   isRoundStarted = false;
@@ -550,14 +547,30 @@ function renderPlayerControls() {
 
 function handleHitButtonClick() {
   drawPlayerCard();
+  // - No need to call render here since drawPlayerCard will
+  //   calls renderPlayerCard, which then calls render()
 }
+
 function handleStandButtonClick() {
-  // **********************************
-  // TODO
-  // - Work on result of this function
-  // **********************************
-  drawDealerCard();
-  console.log(dealerHandValue);
+  roundWinner = checkWinnerOnStand();
+  if (roundWinner === '') {
+    drawDealerCard();
+  }
+  render();
+}
+
+function checkWinnerOnStand() {
+  if (dealerHandValue >= 17) {
+    if (dealerHandValue > playerHandValue) {
+      return 'dealer';
+    } else if (dealerHandValue < playerHandValue) {
+      return 'player';
+    } else if (dealerHandValue === playerHandValue) {
+      return 'push';
+    }
+  } else if (dealerHandValue < 17) {
+    return '';
+  }
 }
 
 // - Validates initial bet.
@@ -602,7 +615,7 @@ function checkForWinnerOnInitialDraw() {
   }
   if (dealerHandValue === 21 && playerHandValue < 21) {
     return 'dealer';
-  } else if (playerHandValue === 21 && dealerHandValue < 21) {
+  } else if (dealerHandValue < 21 && playerHandValue === 21) {
     return 'player';
   }
   return '';
@@ -630,7 +643,7 @@ function drawDealerCard() {
           roundWinner = 'player';
         }
       } else if (dealerHandValue < 17) {
-        render(); // TODO - **** test this code block ****
+        drawDealerCard();
       }
     }
   }
@@ -658,12 +671,15 @@ function drawPlayerCard() {
           roundWinner = 'push';
         } else if (playerHandValue > dealerHandValue) {
           roundWinner = 'player';
-        } else if (playerHandValue < dealerHandValue) {
-          render(); // TODO - **** test this code block ****
         }
-        // - Dealer must keep drawing if below 17, even if player chooses to stand.
       } else if (dealerHandValue < 17) {
-        drawDealerCard();
+        if (dealerHandValue === 16 && playerHandValue === 16) {
+          roundWinner = 'push';
+        } else {
+          // - Dealer must keep drawing under 2 conditions: 1) their hand value is not
+          //   equal to player hand value, and 2) their hand value is below 17.
+          drawDealerCard();
+        }
       }
     }
   }
