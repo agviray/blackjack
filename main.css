@@ -278,6 +278,11 @@ Player controls are the STAND and HIT buttons.
 
 #player-controls {
   flex: 1;
+  visibility: hidden;
+}
+
+#player-controls.is-visible {
+  visibility: visible;
 }
 
 #player-controls .controls .inner-container {

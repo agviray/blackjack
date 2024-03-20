@@ -442,11 +442,13 @@ let gameMessage;
 // - Player details (cash amounts) DOM Elements
 const currentBet = document.querySelector('.bet');
 const cashLeft = document.querySelector('.cash');
+// - Player controls
+const playerControls = document.querySelector('#player-controls');
 // - Card DOM Elements
 const dealerCards = document.querySelector('.dealer-cards');
 const playerCards = document.querySelector('.player-cards');
-const standBtn = document.querySelector('.stand');
-const hitBtn = document.querySelector('.hit');
+const standButton = document.querySelector('.stand');
+const hitButton = document.querySelector('.hit');
 // - Message DOM Elements
 const gameMessageTop = document.querySelector('.game-message p.top');
 const gameMessageBottom = document.querySelector('.game-message p.bottom');
@@ -456,6 +458,8 @@ const betButton = document.querySelector('button.bet-button');
 
 /*----- event listeners -----*/
 betButton.addEventListener('click', handleBetButtonClick);
+hitButton.addEventListener('click', handleHitButtonClick);
+standButton.addEventListener('click', handleStandButtonClick);
 /*----- functions -----*/
 init();
 
@@ -487,6 +491,7 @@ function render() {
   renderGameMessage();
   renderBettingUI();
   renderPlayerDetails();
+  renderPlayerControls();
   renderDealerCards();
   renderPlayerCards();
 }
@@ -496,7 +501,8 @@ function renderGameMessage() {
   if (isInitialDraw === true) {
     gameMessageTop.innerText = gameMessage.top;
     gameMessageBottom.innerText = gameMessage.bottom;
-  } else if (isInitialDraw === false) {
+  }
+  if (isInitialDraw === false) {
     if (roundWinner === '') {
       if (dealerCardsInHand.length === 2) {
         const dealerUpCard = dealerCardsInHand[1].id.split('-').join(' of ');
@@ -506,8 +512,14 @@ function renderGameMessage() {
       }
       gameMessageBottom.innerText = `Your total: ${playerHandValue}`;
     } else {
-      gameMessageTop.innerText = `The winner is ${roundWinner}!`;
-      gameMessageBottom.innerText = ``;
+      if (roundWinner === 'push') {
+        gameMessageTop.innerText = `Push! Nobody wins.`;
+      } else if (roundWinner === 'dealer') {
+        gameMessageTop.innerText = `Dealer wins! Their hand of ${dealerHandValue} beat's your hand of ${playerHandValue}!`;
+      } else if (roundWinner === 'player') {
+        gameMessageTop.innerText = `You win! Your hand of ${playerHandValue} beat's dealer's hand of ${dealerHandValue}!`;
+      }
+      gameMessageBottom.innerText = `Keep playing?`;
     }
   }
 }
@@ -525,6 +537,27 @@ function renderBettingUI() {
 function renderPlayerDetails() {
   currentBet.innerText = playerDetails.bet.toFixed(2);
   cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+}
+
+// - Toggle visibility of player controls ui.
+function renderPlayerControls() {
+  if (isRoundStarted && roundWinner === '') {
+    playerControls.classList.add('is-visible');
+  } else {
+    playerControls.classList.remove('is-visible');
+  }
+}
+
+function handleHitButtonClick() {
+  drawPlayerCard();
+}
+function handleStandButtonClick() {
+  // **********************************
+  // TODO
+  // - Work on result of this function
+  // **********************************
+  drawDealerCard();
+  console.log(dealerHandValue);
 }
 
 // - Validates initial bet.
@@ -583,6 +616,24 @@ function drawDealerCard() {
   dealerCardsInHand = [...dealerCardsInHand, card];
   dealerHandValue += card.value;
   cardsInDeck = [...cardDeck];
+
+  if (!isInitialDraw) {
+    if (dealerHandValue > 21) {
+      roundWinner = 'player';
+    } else if (dealerHandValue <= 21) {
+      if (dealerHandValue >= 17) {
+        if (dealerHandValue === playerHandValue) {
+          roundWinner = 'push';
+        } else if (dealerHandValue > playerHandValue) {
+          roundWinner = 'dealer';
+        } else if (dealerHandValue < playerHandValue) {
+          roundWinner = 'player';
+        }
+      } else if (dealerHandValue < 17) {
+        render(); // TODO - **** test this code block ****
+      }
+    }
+  }
   render();
 }
 
@@ -594,6 +645,28 @@ function drawPlayerCard() {
   playerCardsInHand = [...playerCardsInHand, card];
   playerHandValue += card.value;
   cardsInDeck = [...cardDeck];
+
+  // - Logic for drawing player cards when
+  //   not the initial draw.
+  if (!isInitialDraw) {
+    if (playerHandValue > 21) {
+      roundWinner = 'dealer';
+    } else if (playerHandValue <= 21) {
+      // - Dealer must stand on 17 or higher.
+      if (dealerHandValue >= 17) {
+        if (playerHandValue === dealerHandValue) {
+          roundWinner = 'push';
+        } else if (playerHandValue > dealerHandValue) {
+          roundWinner = 'player';
+        } else if (playerHandValue < dealerHandValue) {
+          render(); // TODO - **** test this code block ****
+        }
+        // - Dealer must keep drawing if below 17, even if player chooses to stand.
+      } else if (dealerHandValue < 17) {
+        drawDealerCard();
+      }
+    }
+  }
   render();
 }
 
@@ -606,7 +679,7 @@ function renderDealerCards() {
     cardDiv.classList.add('card');
 
     // - Shows card design or card face depending on
-    //   whether or not a winner exists when initial cards dealt.
+    //  several conditions.
     if (index === 0 && dealerCardsInHand.length <= 2) {
       if (roundWinner === '') {
         cardImg.setAttribute('src', '../images/card-design.svg');
