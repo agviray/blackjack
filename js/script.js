@@ -432,10 +432,10 @@ let dealerCardsInHand;
 // - game state
 let isRoundStarted;
 let isInitialDraw;
-let isPlayerTurn;
 let cardsInDeck;
 let roundWinner;
 let gameMessage;
+let isContinuedGame;
 /*----- cached element references -----*/
 // - Player details (cash amounts) DOM Elements
 const currentBet = document.querySelector('.bet');
@@ -453,11 +453,16 @@ const gameMessageBottom = document.querySelector('.game-message p.bottom');
 const bettingUI = document.querySelector('.betting-ui');
 const betInput = document.querySelector('input.bet-input');
 const betButton = document.querySelector('button.bet-button');
+const keepPlayingButtons = document.querySelector('.keep-playing-buttons');
+const yesButton = keepPlayingButtons.querySelector('.yes-button');
+const noButton = keepPlayingButtons.querySelector('.no-button');
 
 /*----- event listeners -----*/
 betButton.addEventListener('click', handleBetButtonClick);
 hitButton.addEventListener('click', handleHitButtonClick);
 standButton.addEventListener('click', handleStandButtonClick);
+yesButton.addEventListener('click', handleYesButtonClick);
+noButton.addEventListener('click', handleNoButtonClick);
 /*----- functions -----*/
 init();
 
@@ -472,13 +477,13 @@ function init() {
   dealerCardsInHand = [];
   isRoundStarted = false;
   isInitialDraw = true;
-  isPlayerTurn = false;
   cardsInDeck = shuffleCards(CARDS);
   roundWinner = '';
   gameMessage = {
-    top: 'The name of the game is Blackjack. Place your bet!',
+    top: 'The name of the game is Blackjack!',
     bottom: 'How much are you betting?',
   };
+  isContinuedGame = false;
   render();
 }
 
@@ -486,7 +491,7 @@ function render() {
   console.log(dealerCardsInHand);
   console.log(playerCardsInHand);
   renderGameMessage();
-  renderBettingUI();
+  renderMessageUI();
   renderPlayerDetails();
   renderPlayerControls();
   renderDealerCards();
@@ -522,18 +527,25 @@ function renderGameMessage() {
 }
 
 // - Renders the betting UI
-function renderBettingUI() {
+function renderMessageUI() {
   if (isRoundStarted) {
     bettingUI.classList.add('removed');
   } else {
     bettingUI.classList.remove('removed');
   }
+  if (roundWinner !== '') {
+    keepPlayingButtons.classList.add('visible');
+  } else {
+    keepPlayingButtons.classList.remove('visible');
+  }
 }
 
 // - Renders player details content.
 function renderPlayerDetails() {
-  currentBet.innerText = playerDetails.bet.toFixed(2);
-  cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+  if (roundWinner === '') {
+    currentBet.innerText = playerDetails.bet.toFixed(2);
+    cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+  }
 }
 
 // - Toggle visibility of player controls ui.
@@ -543,6 +555,44 @@ function renderPlayerControls() {
   } else {
     playerControls.classList.remove('is-visible');
   }
+}
+
+// - Continues game current game with updated playerDetails (bet/cashLeft)
+//   depending on roundWinner outcome of most recent round.
+function handleYesButtonClick(event) {
+  event.preventDefault();
+  updatePlayerDetails();
+  playerHandValue = 0;
+  playerCardsInHand = [];
+  dealerHandValue = 0;
+  dealerCardsInHand = [];
+  isRoundStarted = false;
+  isInitialDraw = true;
+  cardsInDeck = shuffleCards(CARDS);
+  roundWinner = '';
+  gameMessage.top = `I knew you weren't a quitter! Good luck!`;
+  isContinuedGame = true;
+  render();
+}
+
+// - Updates player details (bet/cashLeft) according to
+//   roundWinner outcome of most recent round.
+function updatePlayerDetails() {
+  if (roundWinner === 'player') {
+    console.log(playerDetails.bet);
+    playerDetails.cashLeft += playerDetails.bet * 2;
+  } else if (roundWinner === 'dealer') {
+    // do something
+  } else if (roundWinner === 'push') {
+    playerDetails.cashLeft += playerDetails.bet;
+  }
+  playerDetails.bet = 0.0;
+}
+
+// - Completely reseta the game.
+function handleNoButtonClick(event) {
+  event.preventDefault();
+  init();
 }
 
 function handleHitButtonClick() {
@@ -578,9 +628,6 @@ function checkWinnerOnStand() {
 //   players details state.
 function handleBetButtonClick(event) {
   event.preventDefault();
-  if (typeof betInput.value !== 'number') {
-    gameMessage.top = 'Enter a valid amount!';
-  }
 
   if (betInput.value < 1) {
     gameMessage.top = 'You must enter at least $1.00';
