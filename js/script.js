@@ -582,7 +582,11 @@ function updatePlayerDetails() {
 
 // - Toggle visibility of player controls ui.
 function renderPlayerControls() {
-  if (isRoundStarted && roundWinner === '') {
+  if (
+    isRoundStarted &&
+    roundWinner === '' &&
+    (playerDetails.bet !== 0 || playerDetails.cashLeft >= 1)
+  ) {
     playerControls.classList.add('is-visible');
   } else {
     playerControls.classList.remove('is-visible');
