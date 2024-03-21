@@ -132,6 +132,13 @@ body {
   display: inline-flex;
 }
 
+.restart-button {
+  display: none;
+}
+.restart-button.visible {
+  display: inline-block;
+}
+
 .cards {
   height: 100%;
   min-height: 100%;

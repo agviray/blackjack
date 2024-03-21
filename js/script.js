@@ -456,13 +456,15 @@ const betButton = document.querySelector('button.bet-button');
 const keepPlayingButtons = document.querySelector('.keep-playing-buttons');
 const yesButton = keepPlayingButtons.querySelector('.yes-button');
 const noButton = keepPlayingButtons.querySelector('.no-button');
+const restartButton = document.querySelector('.restart-button');
 
 /*----- event listeners -----*/
 betButton.addEventListener('click', handleBetButtonClick);
 hitButton.addEventListener('click', handleHitButtonClick);
 standButton.addEventListener('click', handleStandButtonClick);
 yesButton.addEventListener('click', handleYesButtonClick);
-noButton.addEventListener('click', handleNoButtonClick);
+noButton.addEventListener('click', resetGame);
+restartButton.addEventListener('click', resetGame);
 /*----- functions -----*/
 init();
 
@@ -490,10 +492,10 @@ function init() {
 function render() {
   console.log(dealerCardsInHand);
   console.log(playerCardsInHand);
-  renderGameMessage();
-  renderMessageUI();
   renderPlayerDetails();
+  renderGameMessage();
   renderPlayerControls();
+  renderMessageUI();
   renderDealerCards();
   renderPlayerCards();
 }
@@ -528,11 +530,23 @@ function renderGameMessage() {
 
 // - Renders the betting UI
 function renderMessageUI() {
+  // - Toggle visiblity of restart button.
+  // if (
+  //   isRoundStarted &&
+  //   playerDetails.bet === 0 &&
+  //   playerDetails.cashLeft === 0
+  // ) {
+  //   restartButton.classList.add('visible');
+  // } else {
+  //   restartButton.classList.remove('visible');
+  // }
+  // - Toggle visibility of betting UI
   if (isRoundStarted) {
     bettingUI.classList.add('removed');
   } else {
     bettingUI.classList.remove('removed');
   }
+  // - Toggle visibility of the "continue playing" buttons.
   if (roundWinner !== '') {
     keepPlayingButtons.classList.add('visible');
   } else {
@@ -542,9 +556,22 @@ function renderMessageUI() {
 
 // - Renders player details content.
 function renderPlayerDetails() {
-  if (roundWinner === '') {
-    currentBet.innerText = playerDetails.bet.toFixed(2);
-    cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+  updatePlayerDetails();
+  console.log(playerDetails);
+  currentBet.innerText = playerDetails.bet.toFixed(2);
+  cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+}
+
+// - Updates player details (bet/cashLeft) according to
+//   roundWinner outcome of most recent round.
+function updatePlayerDetails() {
+  if (isRoundStarted && roundWinner !== '') {
+    if (roundWinner === 'player') {
+      playerDetails.cashLeft += playerDetails.bet * 2;
+    } else if (roundWinner === 'push') {
+      playerDetails.cashLeft += playerDetails.bet;
+    }
+    playerDetails.bet = 0.0;
   }
 }
 
@@ -561,37 +588,36 @@ function renderPlayerControls() {
 //   depending on roundWinner outcome of most recent round.
 function handleYesButtonClick(event) {
   event.preventDefault();
-  updatePlayerDetails();
+  if (
+    isRoundStarted &&
+    playerDetails.bet === 0 &&
+    playerDetails.cashLeft === 0
+  ) {
+    gameMessage.top = `You have $${playerDetails.cashLeft} left.`;
+    gameMessage.bottom = 'Start over?';
+    restartButton.classList.add('visible');
+  } else {
+    gameMessage.top = `I knew you weren't a quitter! Good luck!`;
+    isRoundStarted = false;
+  }
+
   playerHandValue = 0;
   playerCardsInHand = [];
   dealerHandValue = 0;
   dealerCardsInHand = [];
-  isRoundStarted = false;
   isInitialDraw = true;
   cardsInDeck = shuffleCards(CARDS);
   roundWinner = '';
-  gameMessage.top = `I knew you weren't a quitter! Good luck!`;
+
   isContinuedGame = true;
+
   render();
 }
 
-// - Updates player details (bet/cashLeft) according to
-//   roundWinner outcome of most recent round.
-function updatePlayerDetails() {
-  if (roundWinner === 'player') {
-    console.log(playerDetails.bet);
-    playerDetails.cashLeft += playerDetails.bet * 2;
-  } else if (roundWinner === 'dealer') {
-    // do something
-  } else if (roundWinner === 'push') {
-    playerDetails.cashLeft += playerDetails.bet;
-  }
-  playerDetails.bet = 0.0;
-}
-
 // - Completely reseta the game.
-function handleNoButtonClick(event) {
+function resetGame(event) {
   event.preventDefault();
+  restartButton.classList.remove('visible');
   init();
 }
 
@@ -603,6 +629,7 @@ function handleHitButtonClick() {
 
 function handleStandButtonClick() {
   roundWinner = checkWinnerOnStand();
+
   if (roundWinner === '') {
     drawDealerCard();
   }
