@@ -711,6 +711,8 @@ function drawPlayerCard() {
   if (!isInitialDraw) {
     if (playerHandValue > 21) {
       roundWinner = 'dealer';
+    } else if (playerHandValue === 21) {
+      roundWinner = 'player';
     }
   }
   render();
