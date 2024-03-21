@@ -711,23 +711,6 @@ function drawPlayerCard() {
   if (!isInitialDraw) {
     if (playerHandValue > 21) {
       roundWinner = 'dealer';
-    } else if (playerHandValue <= 21) {
-      // - Dealer must stand on 17 or higher.
-      if (dealerHandValue >= 17) {
-        if (playerHandValue === dealerHandValue) {
-          roundWinner = 'push';
-        } else if (playerHandValue > dealerHandValue) {
-          roundWinner = 'player';
-        }
-      } else if (dealerHandValue < 17) {
-        if (dealerHandValue === 16 && playerHandValue === 16) {
-          roundWinner = 'push';
-        } else {
-          // - Dealer must keep drawing under 2 conditions: 1) their hand value is not
-          //   equal to player hand value, and 2) their hand value is below 17.
-          drawDealerCard();
-        }
-      }
     }
   }
   render();
