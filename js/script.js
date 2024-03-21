@@ -519,9 +519,9 @@ function renderGameMessage() {
       if (roundWinner === 'push') {
         gameMessageTop.innerText = `Push! Nobody wins.`;
       } else if (roundWinner === 'dealer') {
-        gameMessageTop.innerText = `Dealer wins! Their hand of ${dealerHandValue} beat's your hand of ${playerHandValue}!`;
+        gameMessageTop.innerText = `Dealer wins! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
       } else if (roundWinner === 'player') {
-        gameMessageTop.innerText = `You win! Your hand of ${playerHandValue} beat's dealer's hand of ${dealerHandValue}!`;
+        gameMessageTop.innerText = `You win! Your hand of ${playerHandValue} beats dealer's hand of ${dealerHandValue}!`;
       }
       gameMessageBottom.innerText = `Keep playing?`;
     }
@@ -591,10 +591,12 @@ function handleYesButtonClick(event) {
   if (
     isRoundStarted &&
     playerDetails.bet === 0 &&
-    playerDetails.cashLeft === 0
+    (playerDetails.cashLeft === 0 || playerDetails.cashLeft < 1)
   ) {
-    gameMessage.top = `You have $${playerDetails.cashLeft} left.`;
-    gameMessage.bottom = 'Start over?';
+    gameMessage.top = `Sorry, minimum buy-in is $1.00, and you only have $${playerDetails.cashLeft.toFixed(
+      2
+    )} ${playerDetails.cashLeft < 1 ? 'cents' : ''}.`;
+    gameMessage.bottom = 'Come back soon!';
     restartButton.classList.add('visible');
   } else {
     gameMessage.top = `I knew you weren't a quitter! Good luck!`;
@@ -659,7 +661,9 @@ function handleBetButtonClick(event) {
   if (betInput.value < 1) {
     gameMessage.top = 'You must enter at least $1.00';
   } else if (betInput.value > playerDetails.cashLeft) {
-    gameMessage.top = `You only have $${playerDetails.cashLeft}. You can't exceed that amount.`;
+    gameMessage.top = `You only have $${playerDetails.cashLeft.toFixed(
+      2
+    )}. You can't exceed that amount.`;
   } else {
     let bet = Number(parseFloat(betInput.value));
     betInput.value = ''; // Clear input of betting UI.
