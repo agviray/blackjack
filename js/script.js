@@ -1,4 +1,3 @@
-console.log('Check your JS!');
 /*----- constants -----*/
 const CARDS = [
   {
@@ -490,8 +489,6 @@ function init() {
 }
 
 function render() {
-  console.log(dealerCardsInHand);
-  console.log(playerCardsInHand);
   renderPlayerDetails();
   renderGameMessage();
   renderPlayerControls();
@@ -509,19 +506,38 @@ function renderGameMessage() {
   if (isInitialDraw === false) {
     if (roundWinner === '') {
       if (dealerCardsInHand.length === 2) {
-        const dealerUpCard = dealerCardsInHand[1].id.split('-').join(' of ');
-        gameMessageTop.innerText = `Dealer's up card is: ${dealerUpCard}`;
+        const dealerUpCard = dealerCardsInHand[1].id
+          .split('-')
+          .join(' of ')
+          .toUpperCase();
+        gameMessageTop.innerText = `Dealer upcard: ${dealerUpCard}`;
       } else {
-        gameMessageTop.innerText = `Dealer's total: ${dealerHandValue}`;
+        gameMessageTop.innerText = `Dealer hand: ${dealerHandValue}`;
       }
-      gameMessageBottom.innerText = `Your total: ${playerHandValue}`;
+      gameMessageBottom.innerText = `Your hand: ${playerHandValue}`;
     } else {
       if (roundWinner === 'push') {
-        gameMessageTop.innerText = `Push! Nobody wins.`;
+        gameMessageTop.innerText = `PUSH! Nobody wins.`;
       } else if (roundWinner === 'dealer') {
-        gameMessageTop.innerText = `Dealer wins! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
+        if (dealerHandValue === 21) {
+          gameMessageTop.innerText = `DEALER HAS A BLACKJACK! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
+        } else {
+          if (playerHandValue > 21) {
+            gameMessageTop.innerText = `YOU BUST, DEALER WINS! Your hand of ${playerHandValue} exceeds 21!`;
+          } else {
+            gameMessageTop.innerText = `DEALER WINS! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
+          }
+        }
       } else if (roundWinner === 'player') {
-        gameMessageTop.innerText = `You win! Your hand of ${playerHandValue} beats dealer's hand of ${dealerHandValue}!`;
+        if (playerHandValue === 21) {
+          gameMessageTop.innerText = `YOU HAVE A BLACKJACK! Your hand of ${playerHandValue} beats the dealer's hand of ${dealerHandValue}!`;
+        } else {
+          if (dealerHandValue > 21) {
+            gameMessageTop.innerText = `DEALER BUSTS, YOU WIN! Their hand of ${dealerHandValue} exceeds 21!`;
+          } else {
+            gameMessageTop.innerText = `YOU WIN! Your hand of ${playerHandValue} beats the dealer's hand of ${playerHandValue}!`;
+          }
+        }
       }
       gameMessageBottom.innerText = `Keep playing?`;
     }
@@ -530,16 +546,6 @@ function renderGameMessage() {
 
 // - Renders the betting UI
 function renderMessageUI() {
-  // - Toggle visiblity of restart button.
-  // if (
-  //   isRoundStarted &&
-  //   playerDetails.bet === 0 &&
-  //   playerDetails.cashLeft === 0
-  // ) {
-  //   restartButton.classList.add('visible');
-  // } else {
-  //   restartButton.classList.remove('visible');
-  // }
   // - Toggle visibility of betting UI
   if (isRoundStarted) {
     bettingUI.classList.add('removed');
@@ -557,7 +563,6 @@ function renderMessageUI() {
 // - Renders player details content.
 function renderPlayerDetails() {
   updatePlayerDetails();
-  console.log(playerDetails);
   currentBet.innerText = playerDetails.bet.toFixed(2);
   cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
 }
@@ -616,7 +621,7 @@ function handleYesButtonClick(event) {
   render();
 }
 
-// - Completely reseta the game.
+// - Completely reset the game.
 function resetGame(event) {
   event.preventDefault();
   restartButton.classList.remove('visible');

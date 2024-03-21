@@ -119,6 +119,10 @@ body {
   display: inline-block;
 }
 
+.betting-ui .bet-input {
+  font-size: 16px;
+}
+
 .betting-ui.removed {
   display: none;
 }
