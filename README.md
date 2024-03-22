@@ -17,11 +17,12 @@ Once the page loads, you'll see the content shown below. You'll start with $500.
 <img src="./images/screenshots/place-bet.png" width="800">
 </p>
 
-The dealer will deal 2 cards to themself and 2 cards for you. Here you have two options:
+The dealer will deal 2 cards to themself and 2 cards to you. From here, you have two options:
 
-- Clicking STAND: Clicking STAND means that you are satisfied with your cards (your "hand"). After selecting this option, the dealer will proceed to deal cards for themself.
-- Clicking HIT: Clicking HIT means that you want to attempt to get another card to bring your hand closer or equal to 21. The dealer will draw another card for you.
-- Note: You can HIT as many times as you want in order to get your hand as close to 21 as possible. If you no longer want cards to be drawn for you, you have the option to STAND.
+- STAND: Clicking STAND means that you are satisfied with your cards (your "hand"). After selecting this option, the dealer will proceed to deal cards for themself.
+- HIT: Clicking HIT means that you would like to attempt to get another card to bring your hand closer or equal to 21. The dealer will draw another card for you. At this point, you have the option to HIT again, or STAND.
+
+  - Note: You can HIT as many times as you want in order to get your hand as close to 21 as possible. If you no longer want cards to be drawn for you, click the option to STAND.
 
 <p>
 <img src="./images/screenshots/cards-dealt.png" width="800">
@@ -39,7 +40,7 @@ When you STAND, the dealer will have to draw cards for themself. Blackjack table
 <img src="./images/screenshots/dealer-bust.png" width="800">
 </p>
 
-Sometimes you or the dealer will get an initial hand that totals 21. This is a "Blackjack"! Whoever received a Blackjack in this scenario would be the winner of the round. If both you and the dealer receives Blackjacks, then the result is a "PUSH", which essentially means a draw. At this point, you can choose to play another round.
+Sometimes you or the dealer will get an initial hand that totals 21. This is a "Blackjack"! Whoever received a Blackjack in this scenario would be the winner of the round. If both you and the dealer receive Blackjacks, then the result is a "PUSH", which essentially means a draw. At this point, you can choose to play another round.
 
 <p>
 <img src="./images/screenshots/immediate-outcome.png" width="800">
@@ -52,7 +53,7 @@ Planned features to add:
 - [ ] Update Ace value of 1 or 11, depending on current hand
 - [ ] Add "split" option
 - [ ] Add "double down" option
-- [ ] Implement user to "Buy In" with desired amount
+- [ ] Allow user to "Buy In" with desired amount
 - [ ] Integrate drag and drop chip of set amounts for betting
 - [ ] Implement a triple card deck for dealer to draw from
 - [ ] Implement feature to allow up to 4 players
