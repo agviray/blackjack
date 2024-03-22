@@ -5,7 +5,9 @@
   --lightBrown: #906124;
   --darkBrown: #714f23;
   --red: #fe3b45;
+  --redDark: #e6353e;
   --green: #3bfe90;
+  --greenDark: #35e681;
   --lightBlue: #f1fdff;
   --darkBlue: rgba(206, 229, 255, 1);
   --purple: #7016dd;
@@ -21,6 +23,20 @@
 body {
   background-color: var(--cream);
   min-width: 350px;
+}
+
+input {
+  padding: 0.25rem 0.5rem;
+}
+
+button {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
 }
 
 .table {
@@ -377,10 +393,15 @@ Player controls are the STAND and HIT buttons.
   box-shadow: 0px 5px 5px 0px rgba(51, 51, 51, 0.49);
 }
 
+#player-controls .controls .button:hover {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 1000px) {
   #player-controls .controls .button {
     width: 90px;
     height: 90px;
+    font-size: 20px;
   }
 }
 
@@ -398,10 +419,24 @@ Player controls are the STAND and HIT buttons.
   line-height: 20px;
 }
 
+@media screen and (min-width: 1000px) {
+  #player-controls .controls .button > span {
+    font-size: 20px;
+  }
+}
+
 #player-controls .controls .button.stand {
   background-color: var(--red);
+}
+#player-controls .controls .button.stand:hover {
+  background-color: var(--redDark);
 }
 
 #player-controls .controls .button.hit {
   background-color: var(--green);
+}
+#player-controls .controls .button.hit:hover,
+#player-controls .controls .button.hit:hover > span {
+  background-color: var(--greenDark);
+  color: var(--offwhite);
 }

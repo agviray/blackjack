@@ -602,9 +602,13 @@ function handleYesButtonClick(event) {
     playerDetails.bet === 0 &&
     (playerDetails.cashLeft === 0 || playerDetails.cashLeft < 1)
   ) {
-    gameMessage.top = `Sorry, minimum buy-in is $1.00, and you only have $${playerDetails.cashLeft.toFixed(
+    gameMessage.top = `Sorry, minimum buy-in is $1.00, and you have $${playerDetails.cashLeft.toFixed(
       2
-    )} ${playerDetails.cashLeft < 1 ? 'cents' : ''}.`;
+    )} ${
+      playerDetails.cashLeft > 0 && playerDetails.cashLeft < 1
+        ? 'cents'
+        : 'dollars'
+    }.`;
     gameMessage.bottom = 'Come back soon!';
     restartButton.classList.add('visible');
   } else {
