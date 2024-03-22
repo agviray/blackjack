@@ -25,10 +25,6 @@ body {
   min-width: 350px;
 }
 
-input {
-  padding: 0.25rem 0.5rem;
-}
-
 button {
   display: inline-block;
   padding: 0.25rem 0.5rem;
@@ -80,7 +76,7 @@ button {
 
 .game-wrapper {
   position: relative;
-  max-width: 1100px;
+  max-width: 1200px;
   min-height: 100vh;
   margin: auto;
 }
@@ -92,6 +88,29 @@ button {
     justify-content: center;
     padding-top: 0;
   }
+}
+
+#background-music {
+  visibility: hidden;
+}
+
+#background-music-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 250px;
+  padding: 1rem;
+}
+
+.volume-control {
+  width: 100%;
+}
+
+.volume-control:hover {
+  cursor: pointer;
 }
 
 .cards {
@@ -291,6 +310,7 @@ details, round outcomes, betting ui, etc.
 }
 
 .betting-ui .bet-input {
+  padding: 0.25rem 0.5rem;
   font-size: 16px;
 }
 

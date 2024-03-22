@@ -447,6 +447,10 @@ const playerCards = document.querySelector('.player-cards');
 const standButton = document.querySelector('.stand');
 const hitButton = document.querySelector('.hit');
 // - Message DOM Elements
+const backgroundMusic = document.querySelector('#background-music');
+const playBgMusicButton = document.querySelector('.play-music');
+const pauseBgMusicButton = document.querySelector('.pause-music');
+const bgMusicVolumeControls = document.querySelector('.volume-control');
 const gameMessageTop = document.querySelector('.game-message p.top');
 const gameMessageBottom = document.querySelector('.game-message p.bottom');
 const bettingUI = document.querySelector('.betting-ui');
@@ -458,6 +462,9 @@ const noButton = keepPlayingButtons.querySelector('.no-button');
 const restartButton = document.querySelector('.restart-button');
 
 /*----- event listeners -----*/
+playBgMusicButton.addEventListener('click', playBgMusic);
+pauseBgMusicButton.addEventListener('click', pauseBgMusic);
+bgMusicVolumeControls.addEventListener('change', handleVolumeChange);
 betButton.addEventListener('click', handleBetButtonClick);
 hitButton.addEventListener('click', handleHitButtonClick);
 standButton.addEventListener('click', handleStandButtonClick);
@@ -495,6 +502,19 @@ function render() {
   renderMessageUI();
   renderDealerCards();
   renderPlayerCards();
+}
+
+// - Play/Pause background music.
+function playBgMusic() {
+  backgroundMusic.play();
+}
+function pauseBgMusic() {
+  backgroundMusic.pause();
+}
+
+backgroundMusic.volume = 0.25; // Set bg music to start at 30% volume
+function handleVolumeChange(event) {
+  backgroundMusic.volume = event.target.value;
 }
 
 // - Renders game message to DOM.
