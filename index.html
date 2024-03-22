@@ -12,15 +12,16 @@
       <div class="table">
         <div class="game-wrapper">
           <audio id="background-music" autoplay loop>
-            <source
-              src="./music/casino-night-background-music.mp3"
-              type="audio/mpeg"
-            />
+            <source src="./music/instrumental-smooth.mp3" type="audio/mpeg" />
             Sorry, your browser does not support the audio element.
           </audio>
           <div id="background-music-controls">
-            <button class="play-music">Play Music</button>
-            <button class="pause-music">Pause Music</button>
+            <button class="play-music">
+              <img src="images/icons/play.svg" alt="Play" />
+            </button>
+            <button class="pause-music">
+              <img src="images/icons/pause.svg" alt="Pause" />
+            </button>
             <input
               type="range"
               class="volume-control"
@@ -62,7 +63,7 @@
                               class="bet-input"
                               type="number"
                               placeholder="Example: 25.00"
-                            /><button class="bet-button">Place Bet</button>
+                            /><button class="bet-button">Bet</button>
                           </div>
                           <div class="keep-playing-buttons">
                             <button class="yes-button">Yes</button>

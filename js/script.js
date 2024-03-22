@@ -488,7 +488,7 @@ function init() {
   cardsInDeck = shuffleCards(CARDS);
   roundWinner = '';
   gameMessage = {
-    top: 'The name of the game is Blackjack!',
+    top: `Let's play Blackjack!`,
     bottom: 'How much are you betting?',
   };
   isContinuedGame = false;
@@ -505,10 +505,12 @@ function render() {
 }
 
 // - Play/Pause background music.
-function playBgMusic() {
+function playBgMusic(event) {
+  event.preventDefault();
   backgroundMusic.play();
 }
-function pauseBgMusic() {
+function pauseBgMusic(event) {
+  event.preventDefault();
   backgroundMusic.pause();
 }
 
@@ -540,7 +542,7 @@ function renderGameMessage() {
         gameMessageTop.innerText = `PUSH! Nobody wins.`;
       } else if (roundWinner === 'dealer') {
         if (dealerHandValue === 21) {
-          gameMessageTop.innerText = `DEALER HAS A BLACKJACK! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
+          gameMessageTop.innerText = `DEALER WINS! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
         } else {
           if (playerHandValue > 21) {
             gameMessageTop.innerText = `YOU BUST, DEALER WINS! Your hand of ${playerHandValue} exceeds 21!`;
@@ -550,7 +552,7 @@ function renderGameMessage() {
         }
       } else if (roundWinner === 'player') {
         if (playerHandValue === 21) {
-          gameMessageTop.innerText = `YOU HAVE A BLACKJACK! Your hand of ${playerHandValue} beats the dealer's hand of ${dealerHandValue}!`;
+          gameMessageTop.innerText = `YOU WIN! Your hand of ${playerHandValue} beats the dealer's hand of ${dealerHandValue}!`;
         } else {
           if (dealerHandValue > 21) {
             gameMessageTop.innerText = `DEALER BUSTS, YOU WIN! Their hand of ${dealerHandValue} exceeds 21!`;
@@ -632,7 +634,7 @@ function handleYesButtonClick(event) {
     gameMessage.bottom = 'Come back soon!';
     restartButton.classList.add('visible');
   } else {
-    gameMessage.top = `I knew you weren't a quitter! Good luck!`;
+    gameMessage.top = `Good luck!`;
     isRoundStarted = false;
   }
 
@@ -780,6 +782,8 @@ function drawPlayerCard() {
   render();
 }
 
+// TODO: Condense some of this logic into a single function
+// and apply to renderPlayerCards.
 function renderDealerCards() {
   dealerCards.innerHTML = '';
   if (dealerCardsInHand.length > 2) {
@@ -810,6 +814,8 @@ function renderDealerCards() {
   });
 }
 
+// TODO: Condense this into a single function
+// which can apply to renderDealerCards as well.
 function renderPlayerCards() {
   playerCards.innerHTML = '';
   if (playerCardsInHand.length > 2) {
