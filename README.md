@@ -14,7 +14,7 @@ Play my Blackjack game [here](https://agviray.github.io/blackjack/)!
 Once the page loads, you'll see the content shown below. You'll start with $500.00 (and hopefully leave with more!). Enter your bet and click the "Bet" button to begin.
 
 <p>
-<img src="./images/screenshots/place-bet.png" width="300">
+<img src="./images/screenshots/place-bet.png" width="800">
 </p>
 
 The dealer will deal 2 cards to themself and 2 cards for you. Here you have two options:
@@ -24,25 +24,25 @@ The dealer will deal 2 cards to themself and 2 cards for you. Here you have two 
 - Note: You can HIT as many times as you want in order to get your hand as close to 21 as possible. If you no longer want cards to be drawn for you, you have the option to STAND.
 
 <p>
-<img src="./images/screenshots/cards-dealt.png" width="300">
+<img src="./images/screenshots/cards-dealt.png" width="800">
 </p>
 
 If you choose to HIT several times and your cards exceed 21, that means you "BUST", and the dealer wins the round.
 
 <p>
-<img src="./images/screenshots/you-bust.png" width="300">
+<img src="./images/screenshots/you-bust.png" width="800">
 </p>
 
 When you STAND, the dealer will have to draw cards for themself. Blackjack table rules can vary, but typically the dealer has to continue drawing cards to themself if their hand is less than 17. If the dealer's hand exceeds 21, they BUST, and you win the round.
 
 <p>
-<img src="./images/screenshots/dealer-bust.png" width="300">
+<img src="./images/screenshots/dealer-bust.png" width="800">
 </p>
 
 Sometimes you or the dealer will get an initial hand that totals 21. This is a "Blackjack"! Whoever received a Blackjack in this scenario would be the winner of the round. If both you and the dealer receives Blackjacks, then the result is a "PUSH", which essentially means a draw. At this point, you can choose to play another round.
 
 <p>
-<img src="./images/screenshots/immediate-outcome.png" width="300">
+<img src="./images/screenshots/immediate-outcome.png" width="800">
 </p>
 
 ## Next Steps
