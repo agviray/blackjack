@@ -67,7 +67,6 @@ body {
   max-width: 1100px;
   min-height: 100vh;
   margin: auto;
-  padding-top: 105px;
 }
 
 @media screen and (min-width: 1000px) {
@@ -79,40 +78,196 @@ body {
   }
 }
 
-.game-message {
-  position: fixed;
+.cards {
+  height: 100%;
+  min-height: 100%;
+}
+
+@media screen and (orientation: landscape) {
+  .cards {
+    padding: 0 0 200px 0;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .cards {
+    padding: 0;
+  }
+}
+
+.cards .inner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+  max-width: 850px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 100px 0 200px 0;
+}
+
+@media screen and (min-width: 1000px) {
+  .cards .inner-container {
+    padding: 200px 0;
+  }
+}
+
+.dealer-cards,
+.player-cards {
+  display: inline-flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  height: 100px;
+  padding: 0 1rem;
+}
+
+.player-cards {
+  flex-wrap: wrap-reverse;
+}
+
+.dealer-cards.stacked,
+.player-cards.stacked {
+  gap: 0.25rem;
+}
+
+@media screen and (min-width: 767px) {
+  .dealer-cards,
+  .player-cards {
+    height: 128px;
+  }
+}
+
+.card,
+.previous-card {
+  display: inline-block;
+  width: 70px;
+  line-height: 0;
+  font-size: 0;
+}
+
+@media screen and (min-width: 767px) {
+  .card {
+    width: 90px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .card {
+    width: 110px;
+  }
+}
+
+.card > img,
+.previous-card > img {
+  max-width: 100%;
+}
+
+.bottom-ui {
+  position: absolute;
   left: 0;
   right: 0;
-  top: 0;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  bottom: 0;
+  width: 100%;
+  height: 160.5px;
+  padding: 0.5rem 1rem;
+  z-index: 1;
+}
+
+@media screen and (min-width: 1000px) {
+  .bottom-ui {
+    /* height: 250px; */
+  }
+}
+
+/*
+The bottom ui's inner container contains
+the player's details and controls.
+*/
+
+.bottom-ui > .inner-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
+  z-index: 1;
+}
+
+@media screen and (min-width: 1000px) {
+  .bottom-ui > .inner-container {
+    max-width: 100%;
+    align-items: stretch;
+    padding: 1rem 1rem;
+  }
+}
+
+.bottom-ui > .inner-container #game-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media screen and (min-width: 1000px) {
+  .bottom-ui > .inner-container #game-details {
+    flex-direction: row;
+    align-items: stretch;
+    max-width: 100%;
+  }
+  .bottom-ui > .inner-container #game-details > section:first-of-type {
+    flex: 2;
+  }
+  .bottom-ui > .inner-container #game-details > section:last-of-type {
+    flex: 1;
+  }
+
+  .game-message,
+  .game-message .inner-container,
+  .player-details,
+  .player-details .inner-container {
+    height: 100%;
+  }
+}
+
+/*
+The game message displays current game details, ie current round 
+details, round outcomes, betting ui, etc.
+*/
+
+.game-message {
+  border-radius: 5px;
   -webkit-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
   -moz-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
   box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
 }
 
-@media screen and (min-width: 1000px) {
-  .game-message {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-}
-
-.game-message .inner-container {
+.game-message > .inner-container {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  padding: 1.75rem 1.5rem;
+  padding: 0.5rem 0.5rem;
   background: var(--darkBlue);
   background: linear-gradient(180deg, var(--darkBlue) 0%, var(--offwhite) 50%);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 1000px) {
+  .game-message > .inner-container {
+    padding: 1rem;
+  }
 }
 
 .game-message .top,
 .game-message .bottom {
   color: #7016dd;
-  font-weight: 700;
 }
 
 .game-message .bottom {
@@ -143,146 +298,32 @@ body {
   display: inline-block;
 }
 
-.cards {
-  height: 100%;
-  min-height: 100%;
-}
-
-@media screen and (orientation: landscape) {
-  .cards {
-    padding: 0 0 200px 0;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .cards {
-    padding: 0;
-  }
-}
-
-.cards .inner-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding-top: 3rem;
-}
-
-@media screen and (min-width: 1000px) {
-  .cards .inner-container {
-    padding-top: 0;
-  }
-}
-
-.dealer-cards,
-.player-cards {
-  display: flex;
-  gap: 1rem;
-  height: 100px;
-}
-
-@media screen and (min-width: 767px) {
-  .dealer-cards,
-  .player-cards {
-    height: 128px;
-  }
-}
-
-.card,
-.previous-card {
-  display: inline-block;
-  width: 70px;
-  line-height: 0;
-  font-size: 0;
-}
-
-@media screen and (min-width: 767px) {
-  .card {
-    width: 90px;
-  }
-}
-
-.card > img,
-.previous-card > img {
-  max-width: 100%;
-}
-
-.bottom-ui {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 160.5px;
-  padding: 0.5rem 1rem;
-  z-index: 1;
-}
-
-@media screen and (min-width: 1000px) {
-  .bottom-ui {
-    right: 0;
-    left: auto;
-    width: auto;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-/*
-
-The bottom ui's inner container contains
-the player's details and controls.
-
-*/
-
-.bottom-ui > .inner-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-@media screen and (min-width: 768px) {
-  .bottom-ui > .inner-container {
-    position: relative;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .bottom-ui > .inner-container {
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-
 /* 
-
-Player details display the player's current bet and 
+Player details display the player's current bet and
 their cash left.
-
 */
-.bottom-ui .inner-container .player-details {
-  border-radius: 13px;
+
+.bottom-ui > .inner-container .player-details {
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
+  -moz-box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
+  box-shadow: 0px 10px 5px 0px rgba(51, 51, 51, 0.25);
 }
 
-.bottom-ui .inner-container .player-details .inner-container {
+.bottom-ui > .inner-container .player-details .inner-container {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 1.25rem;
-  border-radius: 13px;
-  border: 1px solid var(--darkBlue);
+  justify-content: space-between;
+  padding: 0.5rem 0.5rem;
+  border-radius: 5px;
+  /* border: 1px solid var(--darkBlue); */
   background: var(--darkBlue);
   background: linear-gradient(180deg, var(--darkBlue) 0%, var(--offwhite) 50%);
+}
+
+@media screen and (min-width: 1000px) {
+  .bottom-ui > .inner-container .player-details .inner-container {
+    padding: 1rem;
+  }
 }
 
 .bottom-ui .player-details .player-bet,
@@ -291,17 +332,13 @@ their cash left.
   flex-direction: column;
   gap: 5px;
   color: var(--purple);
-  font-weight: 600;
 }
 
 /* 
-
 Player controls are the STAND and HIT buttons.
-
 */
 
 #player-controls {
-  flex: 1;
   visibility: hidden;
 }
 
@@ -311,24 +348,20 @@ Player controls are the STAND and HIT buttons.
 
 #player-controls .controls .inner-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.75rem;
   padding-left: 1rem;
 }
 
-@media screen and (min-width: 450px) {
-  #player-controls .controls .inner-container {
-    gap: 0;
-  }
-}
-
 @media screen and (min-width: 1000px) {
+  #player-controls .controls,
   #player-controls .controls .inner-container {
-    flex-direction: column;
-    gap: 1.5rem;
-    padding-left: 0;
-    padding-top: 2rem;
+    height: 100%;
+  }
+  #player-controls .controls .inner-container {
+    flex-direction: row;
   }
 }
 
@@ -336,12 +369,19 @@ Player controls are the STAND and HIT buttons.
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   -webkit-box-shadow: 0px 5px 5px 0px rgba(51, 51, 51, 0.49);
   -moz-box-shadow: 0px 5px 5px 0px rgba(51, 51, 51, 0.49);
   box-shadow: 0px 5px 5px 0px rgba(51, 51, 51, 0.49);
+}
+
+@media screen and (min-width: 1000px) {
+  #player-controls .controls .button {
+    width: 90px;
+    height: 90px;
+  }
 }
 
 #player-controls .controls .button.stand > span {
@@ -353,9 +393,8 @@ Player controls are the STAND and HIT buttons.
 
 #player-controls .controls .button > span {
   display: inline-block;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 900;
-  letter-spacing: 1px;
   line-height: 20px;
 }
 

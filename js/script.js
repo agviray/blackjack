@@ -758,6 +758,9 @@ function drawPlayerCard() {
 
 function renderDealerCards() {
   dealerCards.innerHTML = '';
+  if (dealerCardsInHand.length > 2) {
+    dealerCards.classList.add('stacked');
+  }
   dealerCardsInHand.forEach((card, index) => {
     const { src, alt } = card.image;
     const cardDiv = document.createElement('div');
@@ -785,6 +788,9 @@ function renderDealerCards() {
 
 function renderPlayerCards() {
   playerCards.innerHTML = '';
+  if (playerCardsInHand.length > 2) {
+    playerCards.classList.add('stacked');
+  }
   playerCardsInHand.forEach((card) => {
     const { src, alt } = card.image;
     const cardDiv = document.createElement('div');

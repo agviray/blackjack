@@ -11,31 +11,6 @@
     <main>
       <div class="table">
         <div class="game-wrapper">
-          <!-- Game Message -->
-          <section>
-            <div class="game-message">
-              <div class="inner-container">
-                <article>
-                  <p class="top"></p>
-                </article>
-                <article>
-                  <p class="bottom"></p>
-                  <div class="betting-ui">
-                    <input
-                      class="bet-input"
-                      type="number"
-                      placeholder="Example: 25.00"
-                    /><button class="bet-button">Place Bet</button>
-                  </div>
-                  <div class="keep-playing-buttons">
-                    <button class="yes-button">Yes</button>
-                    <button class="no-button">No</button>
-                  </div>
-                  <button class="restart-button">Ok</button>
-                </article>
-              </div>
-            </div>
-          </section>
           <!-- Cards -->
           <section>
             <div class="cards">
@@ -53,30 +28,57 @@
           <section>
             <div class="bottom-ui">
               <div class="inner-container">
-                <!-- Player Details -->
-                <section>
-                  <div class="player-details">
-                    <div class="inner-container">
-                      <article>
-                        <div class="player-bet">
-                          <span>Current bet:</span>
-                          <div>
-                            <span class="dollar-sign">$</span>
-                            <span class="bet"></span>
+                <section id="game-details">
+                  <!-- Game Message -->
+                  <section>
+                    <div class="game-message">
+                      <div class="inner-container">
+                        <article>
+                          <p class="top"></p>
+                        </article>
+                        <article>
+                          <p class="bottom"></p>
+                          <div class="betting-ui">
+                            <input
+                              class="bet-input"
+                              type="number"
+                              placeholder="Example: 25.00"
+                            /><button class="bet-button">Place Bet</button>
                           </div>
-                        </div>
-                      </article>
-                      <article>
-                        <div class="player-cash">
-                          <span>Cash left:</span>
-                          <div>
-                            <span class="dollar-sign">$</span>
-                            <span class="cash"></span>
+                          <div class="keep-playing-buttons">
+                            <button class="yes-button">Yes</button>
+                            <button class="no-button">No</button>
                           </div>
-                        </div>
-                      </article>
+                          <button class="restart-button">Ok</button>
+                        </article>
+                      </div>
                     </div>
-                  </div>
+                  </section>
+                  <!-- Player Details -->
+                  <section>
+                    <div class="player-details">
+                      <div class="inner-container">
+                        <article>
+                          <div class="player-bet">
+                            <span>Current bet:</span>
+                            <div>
+                              <span class="dollar-sign">$</span>
+                              <span class="bet"></span>
+                            </div>
+                          </div>
+                        </article>
+                        <article>
+                          <div class="player-cash">
+                            <span>Cash left:</span>
+                            <div>
+                              <span class="dollar-sign">$</span>
+                              <span class="cash"></span>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                  </section>
                 </section>
                 <!-- Player Controls -->
                 <section id="player-controls">
@@ -89,7 +91,7 @@
                       </article>
                       <article>
                         <div class="button hit">
-                          <span>HIT!</span>
+                          <span>HIT</span>
                         </div>
                       </article>
                     </div>
