@@ -557,7 +557,7 @@ function renderGameMessage() {
           if (dealerHandValue > 21) {
             gameMessageTop.innerText = `DEALER BUSTS, YOU WIN! Their hand of ${dealerHandValue} exceeds 21!`;
           } else {
-            gameMessageTop.innerText = `YOU WIN! Your hand of ${playerHandValue} beats the dealer's hand of ${playerHandValue}!`;
+            gameMessageTop.innerText = `YOU WIN! Your hand of ${playerHandValue} beats the dealer's hand of ${dealerHandValue}!`;
           }
         }
       }
@@ -734,14 +734,38 @@ function checkForWinnerOnInitialDraw() {
   return '';
 }
 
+// - Calculates best value for the cards in
+//   dealer's or player's hand.
+// - Will account Ace value changing from 11 to 1, based
+//   on Ace count in hand.
+function updateHandTotal(cardsInHand) {
+  let handTotal = 0;
+  let acesCount = 0;
+
+  cardsInHand.forEach(({ value }) => {
+    handTotal += value;
+    if (value === 11) {
+      acesCount += 1;
+    }
+  });
+
+  while (handTotal > 21 && acesCount > 0) {
+    handTotal -= 10; // - Subract 10 to bring all Ace values (excluding first Ace) to 1.
+    acesCount -= 1;
+  }
+
+  return handTotal;
+}
+
 // - Draw a card for the dealer.
 // - Updates dealerCardsInHand and dealerHandValue state.
 function drawDealerCard() {
   const cardDeck = [...cardsInDeck];
   const card = cardDeck.shift();
-  dealerCardsInHand = [...dealerCardsInHand, card];
-  dealerHandValue += card.value;
+
   cardsInDeck = [...cardDeck];
+  dealerCardsInHand = [...dealerCardsInHand, card];
+  dealerHandValue = updateHandTotal(dealerCardsInHand);
 
   if (!isInitialDraw) {
     if (dealerHandValue > 21) {
@@ -768,15 +792,18 @@ function drawDealerCard() {
 function drawPlayerCard() {
   const cardDeck = [...cardsInDeck];
   const card = cardDeck.shift();
-  playerCardsInHand = [...playerCardsInHand, card];
-  playerHandValue += card.value;
+
   cardsInDeck = [...cardDeck];
+  playerCardsInHand = [...playerCardsInHand, card];
+  playerHandValue = updateHandTotal(playerCardsInHand);
 
   // - Logic for drawing player cards when
   //   not the initial draw.
   if (!isInitialDraw) {
     if (playerHandValue > 21) {
       roundWinner = 'dealer';
+    } else if (playerHandValue === 21) {
+      roundWinner = 'player';
     }
   }
   render();
