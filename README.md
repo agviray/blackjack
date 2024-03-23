@@ -50,11 +50,11 @@ Sometimes you or the dealer will get an initial hand that totals 21. This is a "
 
 Planned features to add:
 
-- [ ] Update Ace value of 1 or 11, depending on current hand
+- [x] Update Ace value of 1 or 11, depending on current hand
 - [ ] Add "split" option
 - [ ] Add "double down" option
 - [ ] Allow user to "Buy In" with desired amount
-- [ ] Integrate drag and drop chip of set amounts for betting
+- [ ] Replace input betting with clickable chips or drag-and-drop chips
 - [ ] Implement a triple card deck for dealer to draw from
 - [ ] Implement feature to allow up to 4 players
 - [ ] Integrate different music to choose from
