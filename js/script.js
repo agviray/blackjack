@@ -460,7 +460,16 @@ const keepPlayingButtons = document.querySelector('.keep-playing-buttons');
 const yesButton = keepPlayingButtons.querySelector('.yes-button');
 const noButton = keepPlayingButtons.querySelector('.no-button');
 const restartButton = document.querySelector('.restart-button');
-
+// - Sound Effects
+const positiveBell = new Audio();
+positiveBell.src = '/sounds/positive-bell.mp3';
+positiveBell.volume = 0.3;
+const extraPositiveBell = new Audio();
+extraPositiveBell.src = '/sounds/extra-positive-bell.mp3';
+extraPositiveBell.volume = 0.3;
+const negativeBell = new Audio();
+negativeBell.src = '/sounds/negative-bell.mp3';
+negativeBell.volume = 0.3;
 /*----- event listeners -----*/
 playBgMusicButton.addEventListener('click', playBgMusic);
 pauseBgMusicButton.addEventListener('click', pauseBgMusic);
@@ -502,6 +511,19 @@ function render() {
   renderMessageUI();
   renderDealerCards();
   renderPlayerCards();
+  renderRoundWinnerSFX();
+}
+
+function renderRoundWinnerSFX() {
+  if (roundWinner === 'player') {
+    if (playerCardsInHand.length === 2 && playerHandValue === 21) {
+      extraPositiveBell.play();
+    } else {
+      positiveBell.play();
+    }
+  } else if (roundWinner === 'dealer' || roundWinner === 'push') {
+    negativeBell.play();
+  }
 }
 
 // - Play/Pause background music.
@@ -514,7 +536,7 @@ function pauseBgMusic(event) {
   backgroundMusic.pause();
 }
 
-backgroundMusic.volume = 0.25; // Set bg music to start at 30% volume
+backgroundMusic.volume = 0.25; // Set bg music to start at 25% volume
 function handleVolumeChange(event) {
   backgroundMusic.volume = event.target.value;
 }

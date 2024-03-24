@@ -51,6 +51,7 @@ Sometimes you or the dealer will get an initial hand that totals 21. This is a "
 Planned features to add:
 
 - [x] Update Ace value of 1 or 11, depending on current hand
+- [x] Set sound effects on player actions and round results
 - [ ] Add "split" option
 - [ ] Add "double down" option
 - [ ] Allow user to "Buy In" with desired amount
@@ -58,6 +59,5 @@ Planned features to add:
 - [ ] Implement a triple card deck for dealer to draw from
 - [ ] Implement feature to allow up to 4 players
 - [ ] Integrate different music to choose from
-- [ ] Set sound effects on player actions and round results
 - [ ] Update various styles to a more themed/sleek display (ie card flips, UI)
 - [ ] Add a title screen
