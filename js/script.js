@@ -462,13 +462,13 @@ const noButton = keepPlayingButtons.querySelector('.no-button');
 const restartButton = document.querySelector('.restart-button');
 // - Sound Effects
 const positiveBell = new Audio();
-positiveBell.src = '/sounds/positive-bell.mp3';
+positiveBell.src = 'sounds/positive-bell.mp3';
 positiveBell.volume = 0.3;
 const extraPositiveBell = new Audio();
-extraPositiveBell.src = '/sounds/extra-positive-bell.mp3';
+extraPositiveBell.src = 'sounds/extra-positive-bell.mp3';
 extraPositiveBell.volume = 0.3;
 const negativeBell = new Audio();
-negativeBell.src = '/sounds/negative-bell.mp3';
+negativeBell.src = 'sounds/negative-bell.mp3';
 negativeBell.volume = 0.3;
 /*----- event listeners -----*/
 playBgMusicButton.addEventListener('click', playBgMusic);
