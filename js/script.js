@@ -1,3 +1,12 @@
+import {
+  playBgMusicButton,
+  pauseBgMusicButton,
+  bgMusicVolumeControls,
+  handlePlayButtonClick,
+  handlePauseButtonClick,
+  handleVolumeChange,
+} from './utils/musicUtils.js';
+
 /*----- constants -----*/
 const CARDS = [
   {
@@ -447,10 +456,6 @@ const playerCards = document.querySelector('.player-cards');
 const standButton = document.querySelector('.stand');
 const hitButton = document.querySelector('.hit');
 // - Message DOM Elements
-const backgroundMusic = document.querySelector('#background-music');
-const playBgMusicButton = document.querySelector('.play-music');
-const pauseBgMusicButton = document.querySelector('.pause-music');
-const bgMusicVolumeControls = document.querySelector('.volume-control');
 const gameMessageTop = document.querySelector('.game-message p.top');
 const gameMessageBottom = document.querySelector('.game-message p.bottom');
 const bettingUI = document.querySelector('.betting-ui');
@@ -471,8 +476,8 @@ const negativeBell = new Audio();
 negativeBell.src = 'sounds/negative-bell.mp3';
 negativeBell.volume = 0.3;
 /*----- event listeners -----*/
-playBgMusicButton.addEventListener('click', playBgMusic);
-pauseBgMusicButton.addEventListener('click', pauseBgMusic);
+playBgMusicButton.addEventListener('click', handlePlayButtonClick);
+pauseBgMusicButton.addEventListener('click', handlePauseButtonClick);
 bgMusicVolumeControls.addEventListener('change', handleVolumeChange);
 betButton.addEventListener('click', handleBetButtonClick);
 hitButton.addEventListener('click', handleHitButtonClick);
@@ -524,21 +529,6 @@ function renderRoundWinnerSFX() {
   } else if (roundWinner === 'dealer' || roundWinner === 'push') {
     negativeBell.play();
   }
-}
-
-// - Play/Pause background music.
-function playBgMusic(event) {
-  event.preventDefault();
-  backgroundMusic.play();
-}
-function pauseBgMusic(event) {
-  event.preventDefault();
-  backgroundMusic.pause();
-}
-
-backgroundMusic.volume = 0.25; // Set bg music to start at 25% volume
-function handleVolumeChange(event) {
-  backgroundMusic.volume = event.target.value;
 }
 
 // - Renders game message to DOM.
