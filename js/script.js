@@ -6,6 +6,7 @@ import {
   handlePauseButtonClick,
   handleVolumeChange,
 } from './utils/musicUtils.js';
+import { playSoundEffect } from './utils/soundEffectsUtils.js';
 
 /*----- constants -----*/
 const CARDS = [
@@ -432,11 +433,9 @@ const CARDS = [
 let playerHandValue;
 let playerCardsInHand;
 let playerDetails;
-
 // - dealer state
 let dealerHandValue;
 let dealerCardsInHand;
-
 // - game state
 let isRoundStarted;
 let isInitialDraw;
@@ -465,16 +464,6 @@ const keepPlayingButtons = document.querySelector('.keep-playing-buttons');
 const yesButton = keepPlayingButtons.querySelector('.yes-button');
 const noButton = keepPlayingButtons.querySelector('.no-button');
 const restartButton = document.querySelector('.restart-button');
-// - Sound Effects
-const positiveBell = new Audio();
-positiveBell.src = 'sounds/positive-bell.mp3';
-positiveBell.volume = 0.3;
-const extraPositiveBell = new Audio();
-extraPositiveBell.src = 'sounds/extra-positive-bell.mp3';
-extraPositiveBell.volume = 0.3;
-const negativeBell = new Audio();
-negativeBell.src = 'sounds/negative-bell.mp3';
-negativeBell.volume = 0.3;
 /*----- event listeners -----*/
 playBgMusicButton.addEventListener('click', handlePlayButtonClick);
 pauseBgMusicButton.addEventListener('click', handlePauseButtonClick);
@@ -520,15 +509,7 @@ function render() {
 }
 
 function renderRoundWinnerSFX() {
-  if (roundWinner === 'player') {
-    if (playerCardsInHand.length === 2 && playerHandValue === 21) {
-      extraPositiveBell.play();
-    } else {
-      positiveBell.play();
-    }
-  } else if (roundWinner === 'dealer' || roundWinner === 'push') {
-    negativeBell.play();
-  }
+  playSoundEffect(roundWinner, playerCardsInHand, playerHandValue);
 }
 
 // - Renders game message to DOM.
