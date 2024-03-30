@@ -7,6 +7,12 @@ import {
   handleVolumeChange,
 } from './utils/musicUtils.js';
 import { playSoundEffect } from './utils/soundEffectsUtils.js';
+import {
+  getDealerWinnerMessage,
+  getPlayerWinnerMessage,
+  getPushWinnerMessage,
+  getGameInProgressMessage,
+} from './utils/gameMessageUtils.js';
 
 /*----- constants -----*/
 const CARDS = [
@@ -447,13 +453,16 @@ let isContinuedGame;
 // - Player details (cash amounts) DOM Elements
 const currentBet = document.querySelector('.bet');
 const cashLeft = document.querySelector('.cash');
+
 // - Player controls
 const playerControls = document.querySelector('#player-controls');
+
 // - Card DOM Elements
 const dealerCards = document.querySelector('.dealer-cards');
 const playerCards = document.querySelector('.player-cards');
 const standButton = document.querySelector('.stand');
 const hitButton = document.querySelector('.hit');
+
 // - Message DOM Elements
 const gameMessageTop = document.querySelector('.game-message p.top');
 const gameMessageBottom = document.querySelector('.game-message p.bottom');
@@ -464,6 +473,7 @@ const keepPlayingButtons = document.querySelector('.keep-playing-buttons');
 const yesButton = keepPlayingButtons.querySelector('.yes-button');
 const noButton = keepPlayingButtons.querySelector('.no-button');
 const restartButton = document.querySelector('.restart-button');
+
 /*----- event listeners -----*/
 playBgMusicButton.addEventListener('click', handlePlayButtonClick);
 pauseBgMusicButton.addEventListener('click', handlePauseButtonClick);
@@ -474,6 +484,7 @@ standButton.addEventListener('click', handleStandButtonClick);
 yesButton.addEventListener('click', handleYesButtonClick);
 noButton.addEventListener('click', resetGame);
 restartButton.addEventListener('click', resetGame);
+
 /*----- functions -----*/
 init();
 
@@ -495,6 +506,7 @@ function init() {
     bottom: 'How much are you betting?',
   };
   isContinuedGame = false;
+
   render();
 }
 
@@ -508,6 +520,7 @@ function render() {
   renderRoundWinnerSFX();
 }
 
+// Plays appropriate sound effect depending on round winner.
 function renderRoundWinnerSFX() {
   playSoundEffect(roundWinner, playerCardsInHand, playerHandValue);
 }
@@ -519,39 +532,31 @@ function renderGameMessage() {
     gameMessageBottom.innerText = gameMessage.bottom;
   }
   if (isInitialDraw === false) {
+    let message;
     if (roundWinner === '') {
-      if (dealerCardsInHand.length === 2) {
-        const dealerUpCard = dealerCardsInHand[1].id
-          .split('-')
-          .join(' of ')
-          .toUpperCase();
-        gameMessageTop.innerText = `Dealer upcard: ${dealerUpCard}`;
-      } else {
-        gameMessageTop.innerText = `Dealer hand: ${dealerHandValue}`;
-      }
-      gameMessageBottom.innerText = `Your hand: ${playerHandValue}`;
+      message = getGameInProgressMessage(
+        dealerCardsInHand,
+        dealerHandValue,
+        playerHandValue
+      );
+      gameMessageTop.innerText = message.topMessage;
+      gameMessageBottom.innerText = message.bottomMessage;
     } else {
       if (roundWinner === 'push') {
-        gameMessageTop.innerText = `PUSH! Nobody wins.`;
+        gameMessageTop.innerText = getPushWinnerMessage();
       } else if (roundWinner === 'dealer') {
         if (dealerHandValue === 21) {
           gameMessageTop.innerText = `DEALER WINS! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
         } else {
-          if (playerHandValue > 21) {
-            gameMessageTop.innerText = `YOU BUST, DEALER WINS! Your hand of ${playerHandValue} exceeds 21!`;
-          } else {
-            gameMessageTop.innerText = `DEALER WINS! Their hand of ${dealerHandValue} beats your hand of ${playerHandValue}!`;
-          }
+          message = getDealerWinnerMessage(dealerHandValue, playerHandValue);
+          gameMessageTop.innerText = message.topMessage;
         }
       } else if (roundWinner === 'player') {
         if (playerHandValue === 21) {
           gameMessageTop.innerText = `YOU WIN! Your hand of ${playerHandValue} beats the dealer's hand of ${dealerHandValue}!`;
         } else {
-          if (dealerHandValue > 21) {
-            gameMessageTop.innerText = `DEALER BUSTS, YOU WIN! Their hand of ${dealerHandValue} exceeds 21!`;
-          } else {
-            gameMessageTop.innerText = `YOU WIN! Your hand of ${playerHandValue} beats the dealer's hand of ${dealerHandValue}!`;
-          }
+          message = getPlayerWinnerMessage(dealerHandValue, playerHandValue);
+          gameMessageTop.innerText = message.topMessage;
         }
       }
       gameMessageBottom.innerText = `Keep playing?`;
@@ -559,15 +564,15 @@ function renderGameMessage() {
   }
 }
 
-// - Renders the betting UI
+// Renders the betting UI
 function renderMessageUI() {
-  // - Toggle visibility of betting UI
+  // Toggle visibility of betting UI
   if (isRoundStarted) {
     bettingUI.classList.add('removed');
   } else {
     bettingUI.classList.remove('removed');
   }
-  // - Toggle visibility of the "continue playing" buttons.
+  // Toggle visibility of the "continue playing" buttons.
   if (roundWinner !== '') {
     keepPlayingButtons.classList.add('visible');
   } else {
@@ -575,15 +580,15 @@ function renderMessageUI() {
   }
 }
 
-// - Renders player details content.
+// Renders player details content.
 function renderPlayerDetails() {
   updatePlayerDetails();
   currentBet.innerText = playerDetails.bet.toFixed(2);
   cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
 }
 
-// - Updates player details (bet/cashLeft) according to
-//   roundWinner outcome of most recent round.
+// Updates player details (bet/cashLeft) according to
+// roundWinner outcome of most recent round.
 function updatePlayerDetails() {
   if (isRoundStarted && roundWinner !== '') {
     if (roundWinner === 'player') {
@@ -595,7 +600,7 @@ function updatePlayerDetails() {
   }
 }
 
-// - Toggle visibility of player controls ui.
+// Toggle visibility of player controls ui.
 function renderPlayerControls() {
   if (
     isRoundStarted &&
@@ -608,8 +613,8 @@ function renderPlayerControls() {
   }
 }
 
-// - Continues game current game with updated playerDetails (bet/cashLeft)
-//   depending on roundWinner outcome of most recent round.
+// Continues game current game with updated playerDetails (bet/cashLeft)
+// depending on roundWinner outcome of most recent round.
 function handleYesButtonClick(event) {
   event.preventDefault();
   if (
@@ -644,7 +649,7 @@ function handleYesButtonClick(event) {
   render();
 }
 
-// - Completely reset the game.
+// Completely reset the game.
 function resetGame(event) {
   event.preventDefault();
   restartButton.classList.remove('visible');
@@ -653,8 +658,8 @@ function resetGame(event) {
 
 function handleHitButtonClick() {
   drawPlayerCard();
-  // - No need to call render here since drawPlayerCard will
-  //   calls renderPlayerCard, which then calls render()
+  // No need to call render here since drawPlayerCard will
+  // calls renderPlayerCard, which then calls render()
 }
 
 function handleStandButtonClick() {
@@ -680,9 +685,9 @@ function checkWinnerOnStand() {
   }
 }
 
-// - Validates initial bet.
-// - This will also update the game message state and
-//   players details state.
+// Validates initial bet.
+// This will also update the game message state and
+// players details state.
 function handleBetButtonClick(event) {
   event.preventDefault();
 
@@ -703,8 +708,8 @@ function handleBetButtonClick(event) {
   render();
 }
 
-// - Draw first 2 cards to dealer and player
-//   at the beginning of a round.
+// Draw first 2 cards to dealer and player
+// at the beginning of a round.
 function drawInitialCards() {
   drawPlayerCard();
   drawDealerCard();
@@ -714,7 +719,7 @@ function drawInitialCards() {
   roundWinner = checkForWinnerOnInitialDraw();
 }
 
-// - Checks for winner on initial draw (ie at the very beginning of the game)
+// Checks for winner on initial draw (ie at the very beginning of the game)
 function checkForWinnerOnInitialDraw() {
   if (dealerHandValue === 21 && playerHandValue === 21) {
     return 'push';
