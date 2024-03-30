@@ -1,4 +1,5 @@
 :root {
+  /* Misc colors */
   --offwhite: rgba(249, 249, 249, 1);
   --midBlack: #333333;
   --cream: #fffbe3;
@@ -225,7 +226,6 @@ button.pause-music > img {
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 170.5px;
   padding: 0.5rem 1rem;
   z-index: 1;
 }
@@ -236,16 +236,11 @@ the player's details and controls.
 */
 
 .bottom-ui > .inner-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   align-items: center;
   max-width: 500px;
   margin: 0 auto;
   width: 100%;
-  height: 100%;
   padding: 0.5rem 1rem;
   z-index: 1;
 }
@@ -323,11 +318,7 @@ details, round outcomes, betting ui, etc.
   display: inline-block;
 }
 
-.betting-ui {
-  padding-top: 0.25rem;
-}
-
-.betting-ui .bet-input {
+.bet-input {
   margin-right: 0.5rem;
   padding: 0.25rem 0.5rem;
   font-size: 16px;
@@ -335,7 +326,7 @@ details, round outcomes, betting ui, etc.
   border-radius: 3px;
 }
 
-.betting-ui.removed {
+.removed {
   display: none;
 }
 
@@ -353,6 +344,65 @@ details, round outcomes, betting ui, etc.
 }
 .restart-button.visible {
   display: inline-block;
+}
+
+/* 
+Betting chips are the clickable circles used to 
+add up player's bet.
+*/
+
+.betting-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.betting-chips > div {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 50%;
+}
+
+.betting-chips > div:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 0px 1px 5px 5px rgba(206, 229, 255, 1);
+  -moz-box-shadow: 0px 1px 5px 5px rgba(206, 229, 255, 1);
+  box-shadow: 0px 1px 5px 5px rgba(206, 229, 255, 1);
+}
+
+.betting-chips > div > img {
+  width: 100%;
+  font-size: 0;
+  line-height: 0;
+}
+
+.chip-1 {
+  color: black;
+  background-color: white;
+}
+.chip-5 {
+  color: white;
+  background-color: red;
+}
+
+.chip-25 {
+  color: white;
+  background-color: green;
+}
+
+.chip-100 {
+  color: white;
+  background-color: black;
+}
+
+.chip-500 {
+  color: white;
+  background-color: purple;
 }
 
 /* 
@@ -395,11 +445,11 @@ Player controls are the STAND and HIT buttons.
 */
 
 #player-controls {
-  visibility: hidden;
+  display: none;
 }
 
 #player-controls.is-visible {
-  visibility: visible;
+  display: block;
 }
 
 #player-controls .controls .inner-container {

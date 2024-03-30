@@ -7,7 +7,7 @@ import {
   handleVolumeChange,
 } from './utils/musicUtils.js';
 
-import { playSoundEffect } from './utils/soundEffectsUtils.js';
+import { playSoundEffect, playCoinJingle } from './utils/soundEffectsUtils.js';
 
 import {
   getDealerWinnerMessage,
@@ -19,6 +19,7 @@ import {
 import { CARDS, shuffleCards } from './utils/cardsUtils.js';
 
 /*----- app's state (variables) -----*/
+
 // - player state
 let playerHandValue;
 let playerCardsInHand;
@@ -35,7 +36,9 @@ let cardsInDeck;
 let roundWinner;
 let gameMessage;
 let isContinuedGame;
+
 /*----- cached element references -----*/
+
 // - Player details (cash amounts) DOM Elements
 const currentBet = document.querySelector('.bet');
 const cashLeft = document.querySelector('.cash');
@@ -53,18 +56,30 @@ const hitButton = document.querySelector('.hit');
 const gameMessageTop = document.querySelector('.game-message p.top');
 const gameMessageBottom = document.querySelector('.game-message p.bottom');
 const bettingUI = document.querySelector('.betting-ui');
-const betInput = document.querySelector('input.bet-input');
+const bettingChips = Array.from(
+  document.querySelectorAll('.betting-chips > div')
+);
+// const betInput = document.querySelector('input.bet-input');
 const betButton = document.querySelector('button.bet-button');
+const clearBetButton = document.querySelector('button.clear-bet-button');
 const keepPlayingButtons = document.querySelector('.keep-playing-buttons');
 const yesButton = keepPlayingButtons.querySelector('.yes-button');
 const noButton = keepPlayingButtons.querySelector('.no-button');
 const restartButton = document.querySelector('.restart-button');
 
 /*----- event listeners -----*/
+
 playBgMusicButton.addEventListener('click', handlePlayButtonClick);
 pauseBgMusicButton.addEventListener('click', handlePauseButtonClick);
 bgMusicVolumeControls.addEventListener('change', handleVolumeChange);
+bettingChips.forEach((chip) => {
+  chip.addEventListener('click', (event) => {
+    playCoinJingle();
+    handleChipClick(event);
+  });
+});
 betButton.addEventListener('click', handleBetButtonClick);
+clearBetButton.addEventListener('click', handleClearBetButtonClick);
 hitButton.addEventListener('click', handleHitButtonClick);
 standButton.addEventListener('click', handleStandButtonClick);
 yesButton.addEventListener('click', handleYesButtonClick);
@@ -72,6 +87,7 @@ noButton.addEventListener('click', resetGame);
 restartButton.addEventListener('click', resetGame);
 
 /*----- functions -----*/
+
 init();
 
 function init() {
@@ -104,6 +120,7 @@ function render() {
   renderDealerCards();
   renderPlayerCards();
   renderRoundWinnerSFX();
+  // renderChipClick();
 }
 
 // Plays appropriate sound effect depending on round winner.
@@ -169,8 +186,8 @@ function renderMessageUI() {
 // Renders player details content.
 function renderPlayerDetails() {
   updatePlayerDetails();
-  currentBet.innerText = playerDetails.bet.toFixed(2);
-  cashLeft.innerText = playerDetails.cashLeft.toFixed(2);
+  currentBet.innerText = playerDetails.bet;
+  cashLeft.innerText = playerDetails.cashLeft;
 }
 
 // Updates player details (bet/cashLeft) according to
@@ -182,7 +199,7 @@ function updatePlayerDetails() {
     } else if (roundWinner === 'push') {
       playerDetails.cashLeft += playerDetails.bet;
     }
-    playerDetails.bet = 0.0;
+    playerDetails.bet = 0;
   }
 }
 
@@ -208,9 +225,9 @@ function handleYesButtonClick(event) {
     playerDetails.bet === 0 &&
     (playerDetails.cashLeft === 0 || playerDetails.cashLeft < 1)
   ) {
-    gameMessage.top = `Sorry, minimum buy-in is $1.00, and you have $${playerDetails.cashLeft.toFixed(
-      2
-    )} ${
+    gameMessage.top = `Sorry, minimum buy-in is $1.00, and you have $${
+      playerDetails.cashLeft
+    } ${
       playerDetails.cashLeft > 0 && playerDetails.cashLeft < 1
         ? 'cents'
         : 'dollars'
@@ -271,26 +288,39 @@ function checkWinnerOnStand() {
   }
 }
 
-// Validates initial bet.
-// This will also update the game message state and
-// players details state.
+// Adds chip amount to player's current bet amount.
+function handleChipClick(event) {
+  const chipClass = event.currentTarget.classList[0];
+  const chipClassArray = chipClass.split('-');
+  const chipValue = Number(chipClassArray[1]);
+  playCoinJingle();
+  playerDetails.bet += chipValue;
+  render();
+}
+
+// - Validates initial bet.
+// - This will also update the game message state and
+//   players details state.
 function handleBetButtonClick(event) {
   event.preventDefault();
+  const pendingBet = playerDetails.bet;
 
-  if (betInput.value < 1) {
-    gameMessage.top = 'You must enter at least $1.00';
-  } else if (betInput.value > playerDetails.cashLeft) {
-    gameMessage.top = `You only have $${playerDetails.cashLeft.toFixed(
-      2
-    )}. You can't exceed that amount.`;
+  if (pendingBet < 1) {
+    gameMessage.top = 'You must place a bet of at least $1.00.';
+  } else if (pendingBet > playerDetails.cashLeft) {
+    gameMessage.top = `You only have $${playerDetails.cashLeft}. You can't exceed that amount.`;
   } else {
-    let bet = Number(parseFloat(betInput.value));
-    betInput.value = ''; // Clear input of betting UI.
-    playerDetails.bet = bet;
-    playerDetails.cashLeft -= bet;
+    playerDetails.cashLeft -= pendingBet;
     isRoundStarted = true;
     drawInitialCards();
   }
+  render();
+}
+
+// Clears player's pending bet.
+function handleClearBetButtonClick(event) {
+  event.preventDefault();
+  playerDetails.bet = 0;
   render();
 }
 
