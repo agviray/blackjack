@@ -23,9 +23,11 @@ import { CARDS, shuffleCards } from './utils/cardsUtils.js';
 let playerHandValue;
 let playerCardsInHand;
 let playerDetails;
+
 // - dealer state
 let dealerHandValue;
 let dealerCardsInHand;
+
 // - game state
 let isRoundStarted;
 let isInitialDraw;
@@ -343,12 +345,14 @@ function updateHandTotal(cardsInHand) {
 // - Updates dealerCardsInHand and dealerHandValue state.
 function drawDealerCard() {
   const cardDeck = [...cardsInDeck];
-  const card = cardDeck.shift();
+  const card = cardDeck.pop();
 
   cardsInDeck = [...cardDeck];
   dealerCardsInHand = [...dealerCardsInHand, card];
   dealerHandValue = updateHandTotal(dealerCardsInHand);
 
+  // Automatically checks for winner upon dealer draw,
+  // but only if round continues past first 2 cards dealt.
   if (!isInitialDraw) {
     if (dealerHandValue > 21) {
       roundWinner = 'player';
@@ -373,14 +377,14 @@ function drawDealerCard() {
 // - Updates playerCardsInHand and playerHandValue state.
 function drawPlayerCard() {
   const cardDeck = [...cardsInDeck];
-  const card = cardDeck.shift();
+  const card = cardDeck.pop();
 
   cardsInDeck = [...cardDeck];
   playerCardsInHand = [...playerCardsInHand, card];
   playerHandValue = updateHandTotal(playerCardsInHand);
 
-  // - Logic for drawing player cards when
-  //   not the initial draw.
+  // Logic for drawing player cards when
+  // not the initial draw.
   if (!isInitialDraw) {
     if (playerHandValue > 21) {
       roundWinner = 'dealer';
@@ -404,8 +408,8 @@ function renderDealerCards() {
     const cardImg = document.createElement('img');
     cardDiv.classList.add('card');
 
-    // - Shows card design or card face depending on
-    //  several conditions.
+    // Shows card design or card face depending on
+    // several conditions.
     if (index === 0 && dealerCardsInHand.length <= 2) {
       if (roundWinner === '') {
         cardImg.setAttribute('src', 'images/card-design.svg');
