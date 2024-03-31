@@ -11,7 +11,7 @@ negativeBell.src = 'sounds/negative-bell.mp3';
 negativeBell.volume = 0.3;
 
 const coinJingle = new Audio();
-coinJingle.src = '/sounds/coin-jingle.wav';
+coinJingle.src = 'sounds/coin-jingle.wav';
 coinJingle.volume = 0.4;
 
 export function playSoundEffect(winner, playerCards, playerCardValue) {
